@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard - Tour.In</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Ajuste para o Header Pílula */
+    body { padding-top: 100px; overflow-x: hidden; }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    .welcome-section { margin-bottom: 40px; animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both; }
+    .welcome-section h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; }
+
+    /* GRID BENTO (CORRIGIDO) */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: minmax(160px, auto);
+        gap: 20px;
+        animation: fadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    /* CARDS GLASS (CORRIGIDO) */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 30px;
+        text-align: center;
+        transition: var(--transition-smooth);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-primary);
+        box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(to bottom, #fff, var(--accent-primary));
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .cta-card {
+        grid-column: span 3;
+        grid-row: span 2;
+        background: linear-gradient(135deg, rgba(112, 0, 255, 0.2), rgba(0, 242, 255, 0.05));
+        border: 1px solid var(--glass-border);
+        border-radius: 35px;
+        padding: 50px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .quick-access-card {
+        grid-column: span 1;
+        grid-row: span 2;
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 30px;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid transparent;
+        border-radius: 18px;
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 12px;
+        font-weight: 600;
+        transition: var(--transition-smooth);
+    }
+
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(5px); }
+
+    @media (max-width: 1024px) {
+        .bento-grid { grid-template-columns: repeat(2, 1fr); }
+        .cta-card, .quick-access-card { grid-column: span 2; }
+    }
+
+    @media (max-width: 600px) {
+        .bento-grid { grid-template-columns: 1fr; }
+        .cta-card, .quick-access-card { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+        <a href="../index.html">
+            <img src="../assets/img/LogoTI.png" alt="Tour-In" onerror="this.src='../assets/img/logo.png'">
+        </a>

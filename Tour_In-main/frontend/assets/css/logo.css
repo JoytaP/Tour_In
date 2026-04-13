@@ -1,0 +1,73 @@
+/* --- Estilos da Branding e Logo --- */
+
+.brand {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente a imagem com o texto */
+  gap: 10px;           /* Espaçamento entre a imagem e o texto Tour.In */
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #333;         /* Ajuste a cor conforme seu design */
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.brand:hover {
+  opacity: 0.8;
+}
+
+.logo-img {
+  height: 40px;        /* Altura ideal para visualização em desktop */
+  width: auto;         /* Mantém a proporção da imagem original */
+  object-fit: contain;
+  /* Se a logo estiver muito clara, você pode usar filtros: 
+     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); */
+}
+
+/* --- Ajustes de Header e Navegação --- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav a:hover, .nav a.active {
+  color: #007bff; /* Ou a cor principal do seu projeto */
+}
+
+/* --- Responsividade (Mobile) --- */
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 32px; /* Logo um pouco menor em telas de celular */
+  }
+  
+  .brand {
+    font-size: 1.25rem;
+  }
+}
+
+/* --- Footer --- */
+
+.footer .brand {
+  justify-content: center; /* Centraliza a logo no rodapé se o layout for centralizado */
+  margin-bottom: 1rem;
+}

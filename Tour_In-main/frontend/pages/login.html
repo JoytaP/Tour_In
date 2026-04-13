@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Entrar — Tour.In</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* Estilos específicos para a página de login para garantir a centralização */
+    body { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 0; /* Remove o padding do header aqui */
+        overflow: hidden;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 32px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .logo-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        text-decoration: none;
+    }
+
+    .logo-mark {
+        width: 40px;
+        height: 40px;
+        background: var(--accent-primary);
+        border-radius: 12px;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 1.2rem;
+    }
+
+    .logo-text {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+        position: relative;
+    }
+
+    .field-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
+
+    .input-login {
+        width: 100%;
+        padding-left: 45px !important; /* Espaço para o ícone */
+    }
+
+    .msg-error {
+        color: #ff4d4d;
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        text-align: center;
+        min-height: 20px;
+    }
+
+    .footer-links {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .footer-links a {
+        color: var(--accent-primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="login-header">
+      <a href="../index.html" class="logo-box">
+        <div class="logo-mark">T</div>
+        <span class="logo-text">Tour.In</span>
+      </a>
+      <h1 style="font-size: 1.6rem; font-weight: 700;">Bem-vindo</h1>
+      <p style="color: var(--text-muted); margin-top: 5px;">Acesse para explorar o melhor da cidade.</p>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <span class="field-icon">✉</span>
+        <input type="email" class="input-login" id="login-email" placeholder="Seu e-mail" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 10px;">
+        <span class="field-icon">🔒</span>
+        <input type="password" class="input-login" id="login-password" placeholder="Sua senha" required>
+      </div>
+
+      <div style="text-align: right; margin-bottom: 20px;">
+        <a href="#" style="font-size: 0.75rem; color: var(--text-muted); text-decoration: none;">Esqueceu a senha?</a>
+      </div>
+
+      <div id="msg" class="msg-error"></div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar na Conta</button>
+    </form>
+
+    <div class="footer-links">
+      Não tem uma conta? <a href="register.html">Criar conta</a>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+/* PROPOSTA VISUAL TOUR-IN 2026 
+   Estilo: Dark Glassmorphism / Gen-Z Modern
+*/
+
+:root {
+    --bg-dark: #0a0a0c;
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --accent-primary: #0d1d66; /* Ciano Neon */
+    --accent-secondary: #0f4faf; /* Roxo Elétrico */
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    padding-top: 100px; /* Espaço para a nav flutuante */
+    min-height: 100vh;
+}
+
+/* Fundo Animado Sutil */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
+    animation: moveBg 20s infinite linear;
+    z-index: -1;
+}
+
+@keyframes moveBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* --- NAVEGAÇÃO FLUTUANTE (Pílula) --- */
+header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    
+    /* Força a largura e o formato de pílula */
+    width: 90%;
+    max-width: 900px;
+    height: 65px; /* Altura fixa para evitar deformação */
+    padding: 0 30px;
+    border-radius: 100px;
+    
+    /* Efeito de Vidro */
+    background: rgba(10, 10, 12, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    
+    /* Alinhamento dos itens LADO A LADO */
+    display: flex !important; /* !important garante que nenhum estilo antigo mude isso */
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 32px;
+    width: auto;
+    display: block;
+}
+
+.nav-links {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 24px; /* Espaçamento entre os links */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 8px 4px;
+    transition: var(--transition-smooth);
+    white-space: nowrap; /* Evita quebra de linha em nomes longos */
+}
+
+/* Efeito de Hover: Mudança de cor e brilho */
+.nav-links a:hover {
+    color: var(--accent-primary);
+    text-shadow: 0 0 12px rgba(0, 242, 255, 0.5);
+}
+
+/* Indicador de Página Ativa (Underline Neon) */
+.nav-links a.active::after,
+.nav-links a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+    border-radius: 10px;
+    transform: scaleX(1);
+    transition: transform 0.3s ease;
+}
+
+/* Estado inicial da linha (invisível) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+/* Destaque especial para o botão Business ou Sair */
+#logout-btn, a[href*="company_register"] {
+    color: var(--accent-secondary) !important;
+}
+
+#logout-btn:hover {
+    color: #ff4d4d !important;
+    text-shadow: 0 0 12px rgba(255, 77, 77, 0.5);
+}
+
+@media (min-width: 992px) {
+    #introCarousel {
+        margin-top: -58.59px;
+    }
+}
+
+.navbar .nav-link {
+    color: #fff !important;
+}
+
+/* Garante que a logo não empurre o menu */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: 800;
+}
+
+/* --- CARDS E GRIDS --- */
+.event-card, .place-card, .itinerary-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 20px;
+    transition: var(--transition-smooth);
+    overflow: hidden;
+}
+
+.event-card:hover, .place-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
+}
+
+/* --- BOTÕES --- */
+.btn {
+    border-radius: 14px;
+    padding: 12px 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: var(--transition-smooth);
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #000; /* Texto escuro no fundo neon fica mais moderno */
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.4);
+    transform: scale(1.03);
+}
+
+/* --- INPUTS --- */
+input, select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: white;
+    padding: 12px 16px;
+    transition: var(--transition-smooth);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- SEÇÃO DE FUNCIONALIDADES (BENTO GLASS) --- */
+.features-section {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.features-section h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 50px;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.feature-card {
+    /* Efeito de Vidro */
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border) !important;
+    
+    border-radius: 32px;
+    padding: 40px 30px;
+    text-align: left;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de brilho no topo do card ao passar o mouse */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(800px circle at var(--x, 0) var(--y, 0), rgba(255,255,255,0.06), transparent 40%);
+    pointer-events: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    display: block;
+    /* Adiciona um leve brilho no ícone */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}

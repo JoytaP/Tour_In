@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tour.In - Descubra Experiências Únicas</title>
+  <meta name="description" content="Plataforma de turismo e descoberta de experiências locais. Encontre restaurantes, eventos e pontos turísticos com facilidade.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Estilos específicos para a Home Page */
+    body {
+        padding-top: 120px; /* Espaço para a nav flutuante */
+    }
+
+    .hero {
+        text-align: center;
+        padding: 60px 20px;
+        max-width: 900px;
+        margin: 0 auto 40px;
+        animation: fadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 8vw, 4.5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -2px;
+        margin-bottom: 25px;
+        background: linear-gradient(to bottom, #425fb1, var(--accent-primary));
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent; /* Essencial para o gradiente aparecer */
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Grid de Funcionalidades (Bento Style) */
+    .features-section {
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 0 20px;
+    }
+
+    .features-section h2 {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 50px;
+        letter-spacing: -1px;
+        color: #fff;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 32px;
+        padding: 40px 30px;
+        transition: var(--transition-smooth);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 20px 40px rgba(135, 136, 136, 0.1);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        display: inline-block;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    }
+
+    .feature-card h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+
+    .feature-card p {
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    /* Rodapé Moderno */
+    .footer {
+        padding: 100px 20px 60px;
+        text-align: center;
+        border-top: 1px solid var(--glass-border);
+        margin-top: 60px;
+    }
+
+    .footer .brand {
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-description {
+        color: var(--text-muted);
+        max-width: 400px;
+        margin: 0 auto 30px;
+        font-size: 0.9rem;
+    }
+
+    /* Forçar Nav Horizontal */
+    .nav-links {
+        display: flex !important;
+        flex-direction: row !important;
+        list-style: none !important;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+    }
+    
+    .nav-links li { display: block; }
+    .nav-links a { white-space: nowrap; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 3rem; }
+        .hero-buttons .btn { width: 100%; }
+        .nav-links { gap: 10px; }
+        .nav-links a { font-size: 0.7rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="brand">
+        <img src="frontend/assets/img/logo.png" class="logo-img" alt="Logo" onerror="this.style.display='none'">
+        Tour.In
+      </a>
+      <nav>
+  <ul class="nav-links">
+    <li><a href="pages/dashboard.html" class="active">Home</a></li>
+    <li><a href="pages/explore.html">Explorar</a></li>
+    <li><a href="pages/events.html">Eventos</a></li>
+    <li><a href="pages/profile.html">Perfil</a></li>
+    <li><a href="pages/login.html">Login</a></li>
+  </ul>
+</nav>
+
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Viva a sua cidade de um jeito novo.</h1>
+        <p>
+          A plataforma definitiva para encontrar os melhores lugares, eventos secretos e 
+          roteiros personalizados com a curadoria que você merece.
+        </p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="pages/explore.html" style="color: #000;">
+            Começar a Explorar
+          </a>
+          <a class="btn" href="pages/register.html" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--glass-border);">
+            Criar minha conta
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-section">
+      <h2>O que o Tour.In faz por você?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🔍</span>
+          <h3>Busca Inteligente</h3>
+          <p>Encontre exatamente o que procura com nossos filtros avançados por localização e preferências.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⭐</span>
+          <h3>Avaliações Reais</h3>
+          <p>Confie na experiência da comunidade com fotos e relatos autênticos de quem já visitou.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📅</span>
+          <h3>Eventos em Foco</h3>
+          <p>Fique por dentro de tudo o que acontece na região, desde shows a feiras culturais.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📋</span>
+          <h3>Roteiros Personalizados</h3>
+          <p>Planeje seu dia ou fim de semana completo e salve para acessar quando quiser.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="brand">
+        <div class="logo-mark" style="width: 35px; height: 35px; background: var(--accent-primary); border-radius: 10px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
+        Tour.In
+      </div>
+      <p class="footer-description">
+        Sua próxima experiência inesquecível começa aqui.
+      </p>
+      <p style="color: #444; font-size: 0.75rem;">
+        © 2026 Tour.In — Projeto Acadêmico Modernizado.
+      </p>
+    </footer>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/maps-integration.js"></script>
+  <script src="assets/js/search-service.js"></script>
+</body>
+</html>

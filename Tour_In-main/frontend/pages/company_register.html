@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadastrar Empresa - Tour.In Business</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* Ajuste para o Header Pílula */
+    body {
+        padding-top: 100px;
+        overflow-x: hidden;
+    }
+
+    .container-business {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Layout em Grade para Business */
+    .business-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    /* Card de Benefícios (Lateral) */
+    .feature-card-glass {
+        background: linear-gradient(135deg, rgba(112, 0, 255, 0.1), rgba(0, 242, 255, 0.05));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 40px 30px;
+        position: sticky;
+        top: 100px;
+        animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    .feature-card-glass h2 { font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; }
+    
+    .perk-list { list-style: none; padding: 0; }
+    .perk-list li {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        align-items: center;
+    }
+    .perk-list li b { color: var(--accent-primary); }
+
+    /* Formulário Principal Glass */
+    .register-card-glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 35px;
+        padding: 45px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        animation: fadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    /* Seções do Form */
+    .form-section-title {
+        color: var(--accent-primary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 800;
+        margin: 30px 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .form-section-title::after { content: ''; flex: 1; height: 1px; background: var(--glass-border); }
+
+    /* Área de Upload Moderna */
+    .upload-area-neon {
+        border: 2px dashed var(--glass-border);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 40px;
+        text-align: center;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+    }
+    .upload-area-neon:hover {
+        border-color: var(--accent-primary);
+        background: rgba(0, 242, 255, 0.05);
+        transform: scale(1.01);
+    }
+
+    #photos-preview { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .preview-img {
+        width: 70px; height: 70px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid var(--accent-primary);
+        box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    }
+
+    /* Inputs Custom */
+    .input-biz {
+        width: 100%;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 12px 15px;
+        color: #fff;
+        transition: var(--transition-smooth);
+    }
+    .input-biz:focus { border-color: var(--accent-primary); outline: none; background: rgba(255,255,255,0.1); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    @media (max-width: 900px) {
+        .business-grid { grid-template-columns: 1fr; }
+        .feature-card-glass { position: static; }
+        .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-business">
+    <header>
+      <div class="logo">
+        <a href="../index.html" style="text-decoration:none;">
+          <img src="../assets/img/logo.png" alt="Tour-In Business">
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">Voltar ao Site</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="business-grid">
+      <aside class="feature-card-glass">
+        <h2>Tour.In <br><span style="color: var(--accent-primary);">Business</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Coloque seu estabelecimento no radar da nova geração de viajantes.</p>
+        
+        <ul class="perk-list">
+          <li><span>🚀</span> <b>Alcance:</b> Apareça para usuários próximos.</li>
+          <li><span>💎</span> <b>Premium:</b> Perfil com fotos em alta definição.</li>
+          <li><span>📈</span> <b>Analytics:</b> Saiba quem visita seu perfil.</li>
+          <li><span>🛡️</span> <b>Verificado:</b> Selo de confiança no mapa.</li>
+        </ul>
+      </aside>
+
+      <section class="register-card-glass">
+        <h1 style="font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 10px;">Cadastrar Local</h1>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">Preencha os dados oficiais da sua empresa.</p>
+
+        <form id="company-register-form" enctype="multipart/form-data">
+          
+          <div class="form-section-title">Identificação</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Nome Fantasia</label>
+              <input type="text" class="input-biz" id="comp-name" placeholder="Ex: Café Central" required>
+            </div>
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">CNPJ</label>
+              <input type="text" class="input-biz" id="comp-cnpj" placeholder="00.000.000/0000-00" required>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top: 15px;">
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Categoria</label>
+              <select class="input-biz" id="comp-category" required style="height: 47px;">
+                <option value="" disabled selected>Selecione...</option>
+                <option value="gastronomy">🍽️ Gastronomia</option>
+                <option value="nightlife">🎉 Vida Noturna</option>
+                <option value="culture">🎭 Cultura & Arte</option>
+                <option value="tourist">📸 Ponto Turístico</option>
+                <option value="hotel">🏨 Hospedagem</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">WhatsApp Comercial</label>
+              <input type="tel" class="input-biz" id="comp-phone" placeholder="(XX) 99999-9999" required>
+            </div>
+          </div>
+
+          <div class="form-section-title">Onde fica?</div>
+          <div class="form-group">
+            <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Endereço Completo</label>
+            <input type="text" class="input-biz" id="comp-address" placeholder="Rua, Número, Bairro, Cidade - UF" required>
+          </div>
+
+          <div class="form-group" style="margin-top: 15px;">
+            <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Descrição (Bio)</label>
+            <textarea class="input-biz" id="comp-desc" style="min-height: 100px; resize: vertical;" placeholder="O que torna seu lugar único?"></textarea>
+          </div>
+
+          <div class="form-section-title">Visual</div>
+          <div class="upload-area-neon" id="upload-trigger">
+            <span style="font-size: 2rem;">📸</span>
+            <p style="color: #fff; font-weight: 600; margin-top: 10px;">Arraste ou clique para adicionar fotos</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted);">Formatos aceitos: JPG, PNG (Máx 5MB)</p>
+          </div>
+          <input type="file" id="comp-photos" multiple hidden accept="image/*">
+          <div id="photos-preview"></div>
+
+          <div class="form-section-title">Acesso</div>
+          <div class="form-group">
+            <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">E-mail do Administrador</label>
+            <input type="email" class="input-biz" id="comp-email" placeholder="admin@suaempresa.com" required>
+          </div>
+
+          <div class="form-row" style="margin-top: 15px;">
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Criar Senha</label>
+              <input type="password" class="input-biz" id="comp-password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+              <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Confirmar Senha</label>
+              <input type="password" class="input-biz" id="comp-confirm-password" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; display: flex; gap: 12px; align-items: center;">
+            <input type="checkbox" required style="width: 20px; height: 20px; accent-color: var(--accent-primary);">
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Li e aceito os termos de parceria Tour.In.</p>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 30px; padding: 18px; color: #000; font-weight: 800;">
+            FINALIZAR CADASTRO BUSINESS
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/company_auth.js"></script>
+  <script>
+    // Script para disparar o input de arquivo ao clicar na área neon
+    document.getElementById('upload-trigger').addEventListener('click', () => {
+        document.getElementById('comp-photos').click();
+    });
+  </script>
+</body>
+</html>
