@@ -1,110 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const companyRegisterForm = document.getElementById('company-register-form');
-    
-    // Elementos de Upload de Foto
-    const uploadTrigger = document.getElementById('upload-trigger');
-    const fileInput = document.getElementById('comp-photos');
-    const previewContainer = document.getElementById('photos-preview');
+    const form = document.getElementById('company-register-form');
 
-    // 1. Lógica Visual do Upload (Clique na caixa abre o seletor)
-    if (uploadTrigger && fileInput) {
-        uploadTrigger.addEventListener('click', () => {
-            fileInput.click();
-        });
+    const getValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
+    };
 
-        // Quando o usuário seleciona arquivos
-        fileInput.addEventListener('change', (e) => {
-            previewContainer.innerHTML = ''; // Limpa previews anteriores
-            const files = Array.from(e.target.files); // Converte FileList para Array
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            if (files.length > 0) {
-                // Loop para mostrar TODAS as imagens selecionadas
-                files.forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (readerEvent) => {
-                            const img = document.createElement('img');
-                            img.src = readerEvent.target.result;
-                            img.className = 'preview-img';
-                            previewContainer.appendChild(img);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                uploadTrigger.querySelector('p').textContent = `${files.length} foto(s) selecionada(s)`;
-            } else {
-                uploadTrigger.querySelector('p').textContent = 'Clique para adicionar fotos';
+        const password = getValue('comp-password');
+        const confirmPassword = getValue('comp-confirm-password');
+
+        if (password !== confirmPassword) {
+            alert('As senhas não coincidem');
+            return;
+        }
+
+        const submitBtn = form.querySelector('[type="submit"]');
+        const originalText = submitBtn ? submitBtn.textContent : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Cadastrando...'; }
+
+        const formData = new FormData();
+        formData.append('name', getValue('comp-name'));
+        formData.append('cnpj', getValue('comp-cnpj'));
+        formData.append('category', getValue('comp-category'));
+        formData.append('phone', getValue('comp-phone'));
+        formData.append('address', getValue('comp-address'));
+        formData.append('website', getValue('comp-website'));
+        formData.append('description', getValue('comp-desc'));
+        formData.append('email', getValue('comp-email'));
+        formData.append('password', password);
+
+        const fileInput = document.getElementById('comp-photos');
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('photos', fileInput.files[i]);
             }
-        });
-    }
+        }
 
-    // 2. Envio do Formulário
-    if (companyRegisterForm) {
-        companyRegisterForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        try {
+            // 1. Cadastra a empresa
+            const registerResponse = await fetch(`${API_URL}/companies/register`, {
+                method: 'POST',
+                body: formData
+            });
 
-            const password = document.getElementById('comp-password').value;
-            const confirmPassword = document.getElementById('comp-confirm-password').value;
+            const registerData = await registerResponse.json();
 
-            // Validação de Senha
-            if (password !== confirmPassword) {
-                alert('As senhas não coincidem.');
+            if (!registerResponse.ok) {
+                alert(registerData.message || 'Erro ao cadastrar');
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
                 return;
             }
 
-            const btn = companyRegisterForm.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
+            // 2. Faz login automático com as credenciais recém criadas
+            const loginResponse = await fetch(`${API_URL}/companies/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: getValue('comp-email'), password })
+            });
 
-            try {
-                btn.innerText = 'Enviando cadastro...';
-                btn.disabled = true;
+            const loginData = await loginResponse.json();
 
-                // Coleta dos dados usando FormData
-                const formData = new FormData();
-                
-                // Dados de texto
-                formData.append('name', document.getElementById('comp-name').value);
-                formData.append('cnpj', document.getElementById('comp-cnpj').value);
-                formData.append('category', document.getElementById('comp-category').value);
-                formData.append('phone', document.getElementById('comp-phone').value);
-                formData.append('address', document.getElementById('comp-address').value);
-                formData.append('website', document.getElementById('comp-website').value);
-                formData.append('description', document.getElementById('comp-desc').value);
-                formData.append('email', document.getElementById('comp-email').value);
-                formData.append('password', password);
-                formData.append('role', 'company');
-
-                // --- AQUI ESTÁ A CORREÇÃO PRINCIPAL ---
-                // Adiciona CADA arquivo selecionado ao FormData
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        // 'photos' é a chave que o backend vai ler (deve ser a mesma configurada no Multer)
-                        formData.append('photos', fileInput.files[i]);
-                    }
-                }
-
-                // Envio para o Backend
-                const response = await fetch(`${API_URL}/companies/register`, {
-                    method: 'POST',
-                    body: formData 
-                    // Nota: Não definimos 'Content-Type' aqui, o navegador faz isso automaticamente para multipart/form-data
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    alert('Empresa cadastrada com sucesso! Bem-vindo ao Tour.In Business.');
-                    window.location.href = 'login.html'; 
-                } else {
-                    alert('Erro: ' + (data.message || 'Não foi possível cadastrar a empresa.'));
-                }
-            } catch (error) {
-                console.error('Erro de rede:', error);
-                alert('Erro de conexão com o servidor.');
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
+            if (loginResponse.ok) {
+                // Salva token e dados da empresa
+                localStorage.setItem('token', loginData.token);
+                localStorage.setItem('company', JSON.stringify(loginData.user));
+                // Redireciona direto para o dashboard
+                window.location.href = 'company_dasboard.html';
+            } else {
+                // Cadastro ok mas login falhou — manda para página de login com prefill
+                alert('Empresa cadastrada! Faça login para continuar.');
+                sessionStorage.setItem('company_prefill', JSON.stringify({
+                    email: getValue('comp-email'),
+                    password
+                }));
+                window.location.href = 'login.html';
             }
-        });
-    }
+
+        } catch (error) {
+            console.error(error);
+            alert('Erro de conexão com o servidor');
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+        }
+    });
 });

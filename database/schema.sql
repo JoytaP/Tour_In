@@ -1,14 +1,27 @@
--- Tabela de Usuários
+-- Tabela de Usuários (unificada: inclui campos de usuário comum e de empresa)
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT DEFAULT 'user', -- 'user' ou 'company'
+
+    -- Campos de usuário comum
     bio TEXT,
     city TEXT,
+    preferences TEXT,
+
+    -- Campos de empresa
+    cnpj TEXT,
+    category TEXT,
     phone TEXT,
-    preferences TEXT, -- Armazenado como JSON string
+    address TEXT,
+    website TEXT,
+    description TEXT,
+    photos TEXT,
+    lat REAL,
+    lon REAL,
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,7 +30,7 @@ CREATE TABLE IF NOT EXISTS places (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
-    category TEXT, -- 'gastronomy', 'culture', 'nature', 'nightlife'
+    category TEXT,
     address TEXT,
     latitude REAL,
     longitude REAL,
@@ -43,7 +56,7 @@ CREATE TABLE IF NOT EXISTS itineraries (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     name TEXT,
-    items TEXT, -- JSON string com IDs de places/events
+    items TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

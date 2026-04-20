@@ -1,68 +1,51 @@
-// tour-in/backend/models/Company.js (Usando Mongoose/MongoDB)
+const db = require('../config/database');
 
-const mongoose = require('mongoose');
+const Company = {
+    create: (data) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+                INSERT INTO companies 
+                (user_id, name, cnpj, category, phone, address, website, description, photos)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
 
-const CompanySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
+            db.run(
+                query,
+                [
+                    data.user_id,
+                    data.name,
+                    data.cnpj,
+                    data.category,
+                    data.phone,
+                    data.address,
+                    data.website,
+                    data.description,
+                    JSON.stringify(data.photos || [])
+                ],
+                function (err) {
+                    if (err) {
+                        console.error('Erro SQL Company:', err);
+                        reject(err);
+                    } else {
+                        resolve({ id: this.lastID, ...data });
+                    }
+                }
+            );
+        });
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        match: [/.+@.+\..+/, 'Por favor, use um email válido']
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    cnpj: {
-        type: String,
-        required: true,
-        unique: true,
-        match: [/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$|^\d{14}$/, 'CNPJ inválido']
-    },
-    category: {
-        type: String,
-        enum: ['restaurant', 'event_producer', 'tour_operator', 'hotel', 'other'],
-        default: 'other'
-    },
-    description: {
-        type: String,
-        maxlength: 500
-    },
-    // Informações de Localização
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'], // Tipo de GeoJSON para indexação espacial
-            default: 'Point'
-        },
-        coordinates: {
-            type: [Number], // [longitude, latitude]
-            index: '2dsphere'
-        }
-    },
-    is_verified: {
-        type: Boolean,
-        default: false
-    },
-    date_registered: {
-        type: Date,
-        default: Date.now
+
+    findByUserId: (userId) => {
+        return new Promise((resolve, reject) => {
+            db.get(
+                'SELECT * FROM companies WHERE user_id = ?',
+                [userId],
+                (err, row) => {
+                    if (err) reject(err);
+                    else resolve(row);
+                }
+            );
+        });
     }
-});
+};
 
-// Middleware para criptografar a senha antes de salvar
-CompanySchema.pre('save', async function(next) {
-    if (!this.isModified('password')) {
-        next();
-    }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
-
-module.exports = mongoose.model('Company', CompanySchema);
+module.exports = Company;

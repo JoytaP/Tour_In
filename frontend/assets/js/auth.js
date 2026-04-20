@@ -40,9 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Salva o token e dados do usuário
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    // Redireciona para o Dashboard
-                    window.location.href = 'dashboard.html';
+
+                    // Redireciona conforme o tipo de conta
+                    if (data.user.role === 'company') {
+                        window.location.href = 'company_dasboard.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
                 } else {
                     alert(data.message || 'Erro ao fazer login. Verifique seus dados.');
                 }

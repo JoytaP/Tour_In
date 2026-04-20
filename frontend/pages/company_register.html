@@ -195,6 +195,11 @@
           </div>
 
           <div class="form-group" style="margin-top: 15px;">
+            <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Site / Rede Social (opcional)</label>
+            <input type="url" class="input-biz" id="comp-website" placeholder="https://seusite.com.br">
+          </div>
+
+          <div class="form-group" style="margin-top: 15px;">
             <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Descrição (Bio)</label>
             <textarea class="input-biz" id="comp-desc" style="min-height: 100px; resize: vertical;" placeholder="O que torna seu lugar único?"></textarea>
           </div>
@@ -247,4 +252,22 @@
     });
   </script>
 </body>
-</html>
+</html><script>
+// Pré-preenche dados vindos da tela de registro
+document.addEventListener('DOMContentLoaded', () => {
+    const prefill = sessionStorage.getItem('company_prefill');
+    if (prefill) {
+        try {
+            const data = JSON.parse(prefill);
+            const nameInput = document.getElementById('comp-name');
+            const emailInput = document.getElementById('comp-email');
+            const passwordInput = document.getElementById('comp-password');
+            if (nameInput && data.name) nameInput.value = data.name;
+            if (emailInput && data.email) emailInput.value = data.email;
+            if (passwordInput && data.password) passwordInput.value = data.password;
+            // Limpa após usar
+            sessionStorage.removeItem('company_prefill');
+        } catch(e) {}
+    }
+});
+</script>
