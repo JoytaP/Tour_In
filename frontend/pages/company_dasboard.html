@@ -9,121 +9,77 @@
   <style>
     body { padding-top: 100px; overflow-x: hidden; }
     main { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-    .business-header { margin-bottom: 40px; animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both; }
-
+    .business-header { margin-bottom: 40px; animation: fadeUp 0.6s cubic-bezier(0.23,1,0.32,1) both; }
     .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: minmax(160px, auto);
-      gap: 20px;
-      animation: fadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      grid-auto-rows: minmax(160px,auto); gap: 20px;
+      animation: fadeUp 0.8s cubic-bezier(0.23,1,0.32,1) both;
     }
-
     .glass-card {
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 28px;
-      padding: 30px;
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border); border-radius: 28px; padding: 30px;
       transition: var(--transition-smooth);
     }
-
-    .stat-card { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+    .stat-card { text-align:center; display:flex; flex-direction:column; justify-content:center; }
     .stat-number {
       font-size: 3rem; font-weight: 900;
-      background: linear-gradient(to bottom, #fff, var(--accent-primary));
-      -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
-      line-height: 1; margin-bottom: 8px;
+      background: linear-gradient(to bottom,#fff,var(--accent-primary));
+      -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+      line-height:1; margin-bottom:8px;
     }
-
     .events-management { grid-column: span 3; grid-row: span 2; }
-
+    .quick-actions { grid-column: span 1; grid-row: span 2; display:flex; flex-direction:column; gap:12px; }
+    .photos-section { grid-column: span 4; }
     .event-item-mini {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 15px; background: rgba(255,255,255,0.05); border-radius: 18px;
-      margin-bottom: 12px; border: 1px solid transparent; transition: 0.3s;
+      display:flex; align-items:center; padding:15px;
+      background:rgba(255,255,255,0.05); border-radius:18px; margin-bottom:12px;
+      border:1px solid transparent; transition:0.3s;
     }
-    .event-item-mini:hover { border-color: var(--accent-primary); background: rgba(255,255,255,0.08); }
-
-    .quick-actions { grid-column: span 1; grid-row: span 2; display: flex; flex-direction: column; gap: 12px; }
-
+    .event-item-mini:hover { border-color:var(--accent-primary); background:rgba(255,255,255,0.08); }
     .action-btn {
-      display: flex; align-items: center; gap: 12px; width: 100%;
-      padding: 18px; background: rgba(255,255,255,0.05);
-      border: 1px solid var(--glass-border); border-radius: 20px;
-      color: #fff; text-decoration: none; font-weight: 700;
-      font-size: 0.9rem; transition: var(--transition-smooth); cursor: pointer;
+      display:flex; align-items:center; gap:12px; width:100%;
+      padding:18px; background:rgba(255,255,255,0.05);
+      border:1px solid var(--glass-border); border-radius:20px;
+      color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;
+      transition:var(--transition-smooth); cursor:pointer;
     }
-    .action-btn:hover { background: var(--accent-primary); color: #000; transform: translateY(-3px); border-color: var(--accent-primary); }
-
-    .badge-status { font-size: 0.7rem; padding: 4px 10px; border-radius: 100px; font-weight: 800; text-transform: uppercase; }
-    .status-active { background: rgba(0,242,255,0.1); color: var(--accent-primary); }
-    .status-past   { background: rgba(255,255,255,0.08); color: var(--text-muted); }
-
-    .delete-btn {
-      background: none; border: none; color: #ff4d4d; cursor: pointer;
-      font-size: 1rem; padding: 4px 8px; border-radius: 8px;
-      transition: background 0.2s; margin-left: 8px;
+    .action-btn:hover { background:var(--accent-primary); color:#000; transform:translateY(-3px); border-color:var(--accent-primary); }
+    .badge-status { font-size:.7rem; padding:4px 10px; border-radius:100px; font-weight:800; text-transform:uppercase; }
+    .status-active { background:rgba(0,242,255,0.1); color:var(--accent-primary); }
+    .status-past   { background:rgba(255,255,255,0.08); color:var(--text-muted); }
+    .delete-btn { background:none; border:none; color:#ff4d4d; cursor:pointer; font-size:1rem; padding:4px 8px; border-radius:8px; transition:background .2s; }
+    .delete-btn:hover { background:rgba(255,77,77,0.15); }
+    .photo-gallery { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    /* Modal */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:999; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:#111; border:1px solid var(--glass-border); border-radius:28px; padding:36px; width:100%; max-width:540px; max-height:90vh; overflow-y:auto; animation:fadeUp 0.3s ease both; }
+    .modal-box h2 { margin-bottom:24px; font-weight:800; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; margin-bottom:6px; font-size:.8rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 16px; background:rgba(255,255,255,0.06);
+      border:1px solid var(--glass-border); border-radius:14px; color:#fff; font-size:.95rem; font-family:inherit;
     }
-    .delete-btn:hover { background: rgba(255,77,77,0.15); }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-      z-index: 999; align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal-box {
-      background: #111; border: 1px solid var(--glass-border);
-      border-radius: 28px; padding: 36px; width: 100%; max-width: 520px;
-      animation: fadeUp 0.3s ease both;
-    }
-    .modal-box h2 { margin-bottom: 24px; font-weight: 800; }
-
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; margin-bottom: 6px; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06);
-      border: 1px solid var(--glass-border); border-radius: 14px;
-      color: #fff; font-size: 0.95rem; font-family: inherit;
-      transition: border-color 0.2s;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus { outline: none; border-color: var(--accent-primary); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-group select option { background: #111; color: #fff; }
-
-    .modal-actions { display: flex; gap: 12px; margin-top: 8px; }
-    .modal-actions button { flex: 1; }
-    .btn-cancel { background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); color: #fff; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-cancel:hover { background: rgba(255,255,255,0.12); }
-
-    /* ── MODAL EDIÇÃO ── */
-    #edit-modal .modal-box { max-width: 560px; }
-
-    /* ── EMPTY STATE ── */
-    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-    .empty-state span { font-size: 2.5rem; display: block; margin-bottom: 12px; }
-
-    @media (max-width: 1024px) {
-      .bento-grid { grid-template-columns: repeat(2,1fr); }
-      .events-management { grid-column: span 2; }
-    }
-    @media (max-width: 650px) {
-      .bento-grid { grid-template-columns: 1fr; }
-      .events-management, .quick-actions { grid-column: span 1; }
-    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--accent-primary); }
+    .form-group textarea { resize:vertical; min-height:80px; }
+    .form-group select option { background:#111; color:#fff; }
+    .form-group input[type="file"] { padding:8px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .modal-actions { display:flex; gap:12px; margin-top:8px; }
+    .modal-actions button { flex:1; }
+    .btn-cancel { background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:#fff; padding:14px; border-radius:14px; font-weight:700; cursor:pointer; transition:.2s; }
+    .btn-cancel:hover { background:rgba(255,255,255,0.12); }
+    .image-upload-toggle { display:flex; gap:8px; margin-bottom:10px; }
+    .toggle-opt { flex:1; padding:8px; border:1px solid var(--glass-border); border-radius:10px; background:rgba(255,255,255,0.04); color:var(--text-muted); cursor:pointer; font-size:.8rem; text-align:center; transition:.2s; }
+    .toggle-opt.active { border-color:var(--accent-primary); color:var(--accent-primary); background:rgba(0,242,255,0.05); }
+    .empty-state { text-align:center; padding:40px 20px; color:var(--text-muted); }
+    .empty-state span { font-size:2.5rem; display:block; margin-bottom:12px; }
+    @media(max-width:1024px) { .bento-grid { grid-template-columns:repeat(2,1fr); } .events-management { grid-column:span 2; } .photos-section { grid-column:span 2; } }
+    @media(max-width:650px)  { .bento-grid { grid-template-columns:1fr; } .events-management,.quick-actions,.photos-section { grid-column:span 1; } }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
       <a href="../index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
@@ -162,7 +118,7 @@
       </div>
 
       <div class="glass-card stat-card" style="border-color:var(--accent-secondary);background:rgba(112,0,255,0.05);">
-        <div class="stat-number" style="font-size:1.5rem;color:#fff;-webkit-text-fill-color:#fff;">Ativo</div>
+        <div class="stat-number" style="font-size:1.5rem;-webkit-text-fill-color:#fff;">Ativo</div>
         <p style="color:var(--text-muted);font-size:.7rem;">STATUS DA CONTA</p>
       </div>
 
@@ -172,9 +128,7 @@
           <h3 style="font-weight:700;">Meus Eventos</h3>
           <button id="new-event-btn" class="btn btn-primary" style="font-size:.75rem;padding:8px 15px;color:#000;border:none;cursor:pointer;">+ Novo Evento</button>
         </div>
-        <div id="events-list">
-          <div class="empty-state"><span>📅</span>Nenhum evento ainda. Crie o primeiro!</div>
-        </div>
+        <div id="events-list"></div>
       </div>
 
       <!-- Ações Rápidas -->
@@ -184,6 +138,16 @@
         <button class="action-btn" id="new-event-btn-2"><span>🗓️</span> Criar Evento</button>
         <button class="action-btn" id="copy-link-btn"><span>🔗</span> Copiar Link</button>
         <button class="action-btn" id="logout-btn-2" style="color:#ff4d4d;"><span>🚪</span> Sair</button>
+      </div>
+
+      <!-- Galeria de Fotos -->
+      <div class="glass-card photos-section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="font-weight:700;">Fotos da Empresa</h3>
+          <button class="btn btn-primary" id="edit-profile-btn-photos" style="font-size:.75rem;padding:8px 15px;color:#000;border:none;cursor:pointer;">+ Adicionar Fotos</button>
+        </div>
+        <p style="color:var(--text-muted);font-size:.8rem;margin-bottom:12px;">Clique em ✕ para remover uma foto.</p>
+        <div class="photo-gallery" id="photo-gallery"></div>
       </div>
 
     </div>
@@ -202,7 +166,7 @@
           <label>Descrição</label>
           <textarea id="ev-description" placeholder="Descreva o evento..."></textarea>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="grid-2">
           <div class="form-group">
             <label>Data e Hora *</label>
             <input type="datetime-local" id="ev-date" required>
@@ -223,9 +187,19 @@
           <label>Local</label>
           <input type="text" id="ev-location" placeholder="Endereço ou nome do local">
         </div>
+        <!-- Imagem do evento: arquivo OU URL -->
         <div class="form-group">
-          <label>URL da Imagem (opcional)</label>
-          <input type="url" id="ev-image" placeholder="https://...">
+          <label>Imagem do Evento</label>
+          <div class="image-upload-toggle">
+            <button type="button" class="toggle-opt active" id="toggle-file" onclick="switchImageMode('file')">📁 Fazer Upload</button>
+            <button type="button" class="toggle-opt" id="toggle-url" onclick="switchImageMode('url')">🔗 URL da Imagem</button>
+          </div>
+          <div id="image-file-section">
+            <input type="file" id="ev-image-file" accept="image/*" style="color:#fff;">
+          </div>
+          <div id="image-url-section" style="display:none;">
+            <input type="url" id="ev-image-url" placeholder="https://exemplo.com/imagem.jpg">
+          </div>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" id="cancel-event-btn">Cancelar</button>
@@ -239,12 +213,12 @@
   <div class="modal-overlay" id="edit-modal">
     <div class="modal-box">
       <h2>📝 Editar Perfil</h2>
-      <form id="edit-form">
+      <form id="edit-form" enctype="multipart/form-data">
         <div class="form-group">
           <label>Nome da Empresa</label>
           <input type="text" id="edit-name" placeholder="Nome da empresa">
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="grid-2">
           <div class="form-group">
             <label>Telefone</label>
             <input type="text" id="edit-phone" placeholder="(00) 00000-0000">
@@ -274,6 +248,11 @@
           <label>Descrição</label>
           <textarea id="edit-description" placeholder="Conte sobre sua empresa..."></textarea>
         </div>
+        <div class="form-group">
+          <label>Adicionar Novas Fotos</label>
+          <input type="file" id="edit-photos" accept="image/*" multiple style="color:#fff;">
+          <small style="color:var(--text-muted);">Máx. 5MB por foto. As fotos existentes são mantidas.</small>
+        </div>
         <div class="modal-actions">
           <button type="button" class="btn-cancel" id="cancel-edit-btn">Cancelar</button>
           <button type="submit" class="btn btn-primary" style="color:#000;">Salvar Alterações</button>
@@ -282,6 +261,22 @@
     </div>
   </div>
 
+  <script>
+    function switchImageMode(mode) {
+      document.getElementById('image-file-section').style.display = mode === 'file' ? '' : 'none';
+      document.getElementById('image-url-section').style.display  = mode === 'url'  ? '' : 'none';
+      document.getElementById('toggle-file').classList.toggle('active', mode === 'file');
+      document.getElementById('toggle-url').classList.toggle('active', mode === 'url');
+    }
+    // Botão fotos no card galeria
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('edit-profile-btn-photos')?.addEventListener('click', () => {
+        document.getElementById('edit-modal').classList.add('open');
+        // Scroll até campo de fotos
+        setTimeout(() => document.getElementById('edit-photos')?.scrollIntoView({ behavior:'smooth' }), 300);
+      });
+    });
+  </script>
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/company_dashboard.js"></script>
 </body>

@@ -1,59 +1,46 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Verificação de Segurança
-    if (!TourIn.isAuthenticated()) {
-        window.location.href = 'login.html';
-        return;
-    }
+    if (!TourIn.isAuthenticated()) { window.location.href = 'login.html'; return; }
 
-    // 2. Carregar Nome do Usuário
+    // ── Nome do usuário ──
     const user = TourIn.getUser();
-    if (user) {
-        const userNameEl = document.getElementById('user-name');
-        if (userNameEl) userNameEl.textContent = user.name.split(' ')[0];
-    }
+    const userNameEl = document.getElementById('user-name');
+    if (userNameEl && user) userNameEl.textContent = user.name ? user.name.split(' ')[0] : 'Viajante';
 
-    // 3. Atualizar Estatísticas Reais
-    updateDashboardStats();
+    // ── Carrega estatísticas reais ──
+    try {
+        const res = await fetch(`${API_URL}/users/profile`, { headers: TourIn.getAuthHeaders() });
+        if (res.ok) {
+            const data = await res.json();
+            animateValue('stat-itineraries', 0, data.itinerary_count || 0, 900);
 
-    async function updateDashboardStats() {
-        try {
-            // A. Contar Roteiros (Busca do backend)
-            const response = await fetch(`${API_URL}/itineraries`, {
-                headers: TourIn.getAuthHeaders()
-            });
-
-            if (response.ok) {
-                const itineraries = await response.json();
-                // Atualiza o número na tela
-                animateValue("stat-itineraries", 0, itineraries.length, 1000);
+            // Preferências no dashboard
+            const prefs = Array.isArray(data.preferences) ? data.preferences : [];
+            const prefEl = document.getElementById('user-preferences');
+            if (prefEl) {
+                const labels = { gastronomy: '🍽️ Gastronomia', nightlife: '🎉 Noite', culture: '🎭 Cultura', nature: '🌳 Natureza' };
+                prefEl.innerHTML = prefs.length
+                    ? prefs.map(p => `<span class="pref-badge">${labels[p] || p}</span>`).join('')
+                    : '<span style="color:var(--text-muted);font-size:.85rem;">Nenhuma preferência definida. <a href="profile.html">Configurar</a></span>';
             }
-
-            // B. Contar Lugares Salvos (Baseado no Rascunho Local por enquanto)
-            const draft = JSON.parse(localStorage.getItem('temp_itinerary')) || [];
-            animateValue("stat-places", 0, draft.length, 1000);
-
-            // C. Contar Avaliações (Mock - Como não temos tabela de reviews no backend ainda)
-            // Futuramente: fetch(`${API_URL}/users/reviews`)
-            animateValue("stat-reviews", 0, 0, 1000); 
-
-        } catch (error) {
-            console.error('Erro ao atualizar dashboard:', error);
         }
+    } catch (err) {
+        console.error('Erro ao carregar stats:', err);
     }
 
-    // Efeito visual de contagem
+    // Itinerários salvos localmente
+    const draft = JSON.parse(localStorage.getItem('temp_itinerary') || '[]');
+    animateValue('stat-places', 0, draft.length, 900);
+    animateValue('stat-reviews', 0, 0, 900);
+
     function animateValue(id, start, end, duration) {
         const obj = document.getElementById(id);
         if (!obj) return;
-        
         let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const step = (ts) => {
+            if (!startTimestamp) startTimestamp = ts;
+            const progress = Math.min((ts - startTimestamp) / duration, 1);
             obj.innerHTML = Math.floor(progress * (end - start) + start);
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            }
+            if (progress < 1) window.requestAnimationFrame(step);
         };
         window.requestAnimationFrame(step);
     }

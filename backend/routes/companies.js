@@ -3,29 +3,29 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const auth = require('../middleware/auth');
-const companyController = require('../controllers/companyController');
+const ctrl = require('../controllers/companyController');
 
-// --- MULTER ---
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, 'uploads/'),
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
+        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, unique + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB
 
-// --- ROTAS PÚBLICAS ---
-router.post('/register', upload.array('photos', 10), companyController.register);
-router.post('/login', companyController.login);
-router.get('/search', companyController.search);
+// ── Públicas ──
+router.post('/register', upload.array('photos', 10), ctrl.register);
+router.post('/login', ctrl.login);
+router.get('/search', ctrl.search);
 
-// --- ROTAS PROTEGIDAS (precisam de token) ---
-router.get('/profile', auth, companyController.getProfile);
-router.put('/profile', auth, upload.array('photos', 10), companyController.updateProfile);
+// ── Protegidas ──
+router.get('/profile', auth, ctrl.getProfile);
+router.put('/profile', auth, upload.array('photos', 10), ctrl.updateProfile);
+router.delete('/profile/photo', auth, ctrl.removePhoto);
 
-router.get('/events', auth, companyController.getMyEvents);
-router.post('/events', auth, upload.single('image'), companyController.createEvent);
-router.delete('/events/:eventId', auth, companyController.deleteEvent);
+router.get('/events', auth, ctrl.getMyEvents);
+router.post('/events', auth, upload.single('image'), ctrl.createEvent);
+router.delete('/events/:eventId', auth, ctrl.deleteEvent);
 
 module.exports = router;

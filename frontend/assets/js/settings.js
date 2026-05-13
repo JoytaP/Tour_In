@@ -1,131 +1,126 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Proteção: Verifica se está logado
-    if (!TourIn.isAuthenticated()) {
-        window.location.href = 'login.html';
-        return;
-    }
+    if (!TourIn.isAuthenticated()) { window.location.href = 'login.html'; return; }
 
-    // --- LÓGICA DAS ABAS (TABS) ---
-    const tabs = document.querySelectorAll('.tab-btn');
-    const panels = document.querySelectorAll('.settings-panel');
-
-    tabs.forEach(tab => {
+    // ── Abas ──
+    document.querySelectorAll('.tab-btn').forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove a classe 'active' de todas as abas e painéis
-            tabs.forEach(t => t.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-
-            // Adiciona a classe 'active' no botão clicado
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
             tab.classList.add('active');
-
-            // Mostra o painel correspondente
-            const targetId = tab.getAttribute('data-target');
-            const targetPanel = document.getElementById(`panel-${targetId}`);
-            if (targetPanel) {
-                targetPanel.classList.add('active');
-            }
+            const panel = document.getElementById(`panel-${tab.getAttribute('data-target')}`);
+            if (panel) panel.classList.add('active');
         });
     });
 
-    // --- FUNCIONALIDADE 1: MUDAR SENHA (API) ---
+    // ── Mudar senha ──
     const passwordForm = document.getElementById('password-form');
     if (passwordForm) {
         passwordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const currentPassword     = document.getElementById('current-password').value;
+            const newPassword         = document.getElementById('new-password').value;
+            const confirmNewPassword  = document.getElementById('confirm-new-password').value;
 
-            const currentPassword = document.getElementById('current-password').value;
-            const newPassword = document.getElementById('new-password').value;
-            const confirmNewPassword = document.getElementById('confirm-new-password').value;
-
-            // Validações
-            if (newPassword !== confirmNewPassword) {
-                alert('A nova senha e a confirmação não coincidem.');
-                return;
-            }
-            if (newPassword.length < 6) {
-                alert('A senha deve ter no mínimo 6 caracteres.');
-                return;
-            }
+            if (newPassword !== confirmNewPassword) { alert('As senhas não coincidem.'); return; }
+            if (newPassword.length < 6) { alert('A senha deve ter ao menos 6 caracteres.'); return; }
 
             const btn = passwordForm.querySelector('button');
-            const originalText = btn.innerText;
-
+            btn.textContent = 'Atualizando...'; btn.disabled = true;
             try {
-                btn.innerText = 'Atualizando...';
-                btn.disabled = true;
-
-                // Chama a API real
-                const response = await fetch(`${API_URL}/users/change-password`, {
+                const res = await fetch(`${API_URL}/users/change-password`, {
                     method: 'PUT',
                     headers: TourIn.getAuthHeaders(),
                     body: JSON.stringify({ currentPassword, newPassword })
                 });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    alert('Sucesso! Senha alterada. Por favor, faça login novamente.');
-                    TourIn.logout(); // Desloga por segurança
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Senha alterada! Faça login novamente.');
+                    TourIn.logout();
                 } else {
-                    alert('Erro: ' + (data.message || 'Senha atual incorreta.'));
+                    alert(data.message || 'Erro ao alterar senha.');
                 }
-
-            } catch (error) {
-                console.error(error);
-                alert('Erro de conexão com o servidor.');
+            } catch (err) {
+                alert('Erro de conexão.');
             } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
+                btn.textContent = 'Atualizar Senha'; btn.disabled = false;
             }
         });
     }
 
-    // --- FUNCIONALIDADE 2: NOTIFICAÇÕES (Salvar Localmente) ---
+    // ── Notificações ──
     const notifForm = document.getElementById('notifications-form');
-    const marketingCheckbox = document.getElementById('notif-marketing');
-
-    if (notifForm && marketingCheckbox) {
-        // Carrega a preferência salva anteriormente (se existir)
-        const savedPref = localStorage.getItem('pref_marketing_email');
-        if (savedPref !== null) {
-            // Converte string 'true'/'false' para booleano
-            marketingCheckbox.checked = (savedPref === 'true');
-        }
-
+    const marketingCb = document.getElementById('notif-marketing');
+    if (notifForm && marketingCb) {
+        const saved = localStorage.getItem('pref_marketing_email');
+        if (saved !== null) marketingCb.checked = (saved === 'true');
         notifForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Salva a nova escolha
-            localStorage.setItem('pref_marketing_email', marketingCheckbox.checked);
-            
-            // Feedback visual
-            const btn = notifForm.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = 'Salvo!';
-            btn.classList.add('btn-success'); // Opcional, se tiver estilo de sucesso
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('btn-success');
-            }, 2000);
+            localStorage.setItem('pref_marketing_email', marketingCb.checked);
+            showToast('Preferências salvas!');
         });
     }
 
-    // --- FUNCIONALIDADE 3: PRIVACIDADE (Salvar Localmente) ---
+    // ── Privacidade ──
     const privacyForm = document.getElementById('privacy-form');
     const privacySelect = document.getElementById('privacy-select');
-
     if (privacyForm && privacySelect) {
-        // Carrega a preferência salva
-        const savedPrivacy = localStorage.getItem('pref_profile_privacy');
-        if (savedPrivacy) {
-            privacySelect.value = savedPrivacy;
-        }
-
+        const savedP = localStorage.getItem('pref_profile_privacy');
+        if (savedP) privacySelect.value = savedP;
         privacyForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Salva a nova escolha
             localStorage.setItem('pref_profile_privacy', privacySelect.value);
-            
-            alert(`Privacidade definida como: ${privacySelect.options[privacySelect.selectedIndex].text}`);
+            showToast('Privacidade salva!');
         });
+    }
+
+    // ── Excluir Conta ──
+    const deleteBtn = document.querySelector('.btn-danger');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+            // Modal de confirmação inline
+            const password = prompt(
+                '⚠️ Esta ação é irreversível.\n\nDigite sua senha para confirmar a exclusão da sua conta:'
+            );
+            if (password === null) return; // Cancelou
+            if (!password.trim()) { alert('A senha é obrigatória.'); return; }
+
+            confirmDelete(password);
+        });
+    }
+
+    async function confirmDelete(password) {
+        try {
+            const res = await fetch(`${API_URL}/users/account`, {
+                method: 'DELETE',
+                headers: TourIn.getAuthHeaders(),
+                body: JSON.stringify({ password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                alert('Conta excluída com sucesso. Até logo!');
+                TourIn.logout();
+            } else {
+                alert(data.message || 'Não foi possível excluir a conta.');
+            }
+        } catch (err) {
+            alert('Erro de conexão.');
+        }
+    }
+
+    // ── Toast ──
+    function showToast(msg) {
+        let t = document.getElementById('_toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = '_toast';
+            t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+                background:#00f2ff;color:#000;padding:12px 24px;border-radius:100px;
+                font-weight:700;font-size:.9rem;z-index:9999;`;
+            document.body.appendChild(t);
+        }
+        t.textContent = msg; t.style.display = 'block';
+        clearTimeout(t._t);
+        t._t = setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
 });
