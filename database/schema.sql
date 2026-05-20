@@ -60,3 +60,19 @@ CREATE TABLE IF NOT EXISTS itineraries (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+-- Tabela de Wishlist
+CREATE TABLE IF NOT EXISTS wishlist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    user_id INTEGER NOT NULL,
+    place_id INTEGER NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE(user_id, place_id),
+
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(place_id) REFERENCES places(id)
+);
+

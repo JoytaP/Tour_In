@@ -59,7 +59,7 @@
     .profile-name {
         font-size: 1.5rem;
         font-weight: 800;
-        color: #fff;
+        color: var(--text-main);
         margin-bottom: 5px;
     }
 
@@ -78,7 +78,7 @@
     }
 
     .meta-row span:first-child { color: var(--text-muted); font-weight: 500; }
-    .meta-row span:last-child { color: #fff; font-weight: 700; }
+    .meta-row span:last-child { color: var(--text-main); font-weight: 700; }
 
     /* Estilização das Seções do Formulário */
     .section-sep {
@@ -124,7 +124,7 @@
     .pref-chip:hover {
         background: rgba(255, 255, 255, 0.1);
         border-color: var(--accent-primary);
-        color: #fff;
+        color: var(--text-main);
     }
 
     .pref-chip:has(input:checked) {
@@ -140,7 +140,7 @@
         background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid var(--glass-border) !important;
         border-radius: 14px !important;
-        color: #fff !important;
+        background: var(--bg-card) !important;
         padding: 12px 15px !important;
         margin-top: 8px;
     }
@@ -244,7 +244,7 @@
 
           <div class="form-actions">
             <button type="submit" class="btn btn-primary" style="flex: 2;">Salvar Alterações</button>
-            <button type="button" class="btn" style="flex: 1; background: rgba(255,255,255,0.05); color: #fff;">Cancelar</button>
+            <button type="button" class="btn" style="flex: 1; background: rgba(255,255,255,0.05); color: var(--text-main);">Cancelar</button>
           </div>
         </form>
       </div>
@@ -254,7 +254,8 @@
 
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/profile.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/wishlist.js"></script>
 </body>
 </html>

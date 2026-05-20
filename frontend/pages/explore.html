@@ -41,7 +41,7 @@
     }
 
     /* Títulos e Textos */
-    .sidebar-panel h2 { font-weight: 800; letter-spacing: -1px; color: #fff; }
+    .sidebar-panel h2 { font-weight: 800; letter-spacing: -1px; color: var(--text-main); }
     .text-muted-small { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; }
 
     /* BARRA DE PESQUISA */
@@ -155,6 +155,9 @@
         <li><a href="itinerary.html">Roteiros</a></li>
         <li><a href="dashboard.html">Home</a></li>
         <li><a href="#" id="logout-btn" style="color: #ff4d4d;">Sair</a></li>
+        <button id="theme-toggle" class="theme-btn">
+    🌙
+</button>
       </ul>
     </header>
 
@@ -169,7 +172,7 @@
             <button class="btn-icon" id="btn-search">🔍</button>
           </div>
 
-          <button id="btn-geo" class="btn" style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; margin-bottom: 20px; border: 1px solid var(--glass-border); border-radius: 15px;">
+          <button id="btn-geo" class="btn" style="width: 100%; background: rgba(255,255,255,0.05); color: var(--text-main); margin-bottom: 20px; border: 1px solid var(--glass-border); border-radius: 15px;">
             📍 Minha Localização
           </button>
 
@@ -199,7 +202,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/explore.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
-  </body>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/wishlist.js"></script>
+</body>
 </html>

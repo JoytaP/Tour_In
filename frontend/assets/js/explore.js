@@ -177,12 +177,27 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style = `padding: 12px; cursor: pointer; border-radius: 8px; transition: 0.2s; ${styleClass}`;
         card.innerHTML = `
             ${imgHtml}
-            <div style="font-weight: 600; font-size: 0.95rem;">${iconEmoji} ${data.name}</div>
-            <div class="text-secondary small mb-2">${data.info}</div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn small ghost" style="padding: 4px 8px; font-size: 0.75rem;" onclick="focusOnMap(${data.lat}, ${data.lon}, '${data.name}')">📍 Ver</button>
-                <button class="btn small" style="padding: 4px 8px; font-size: 0.75rem;" onclick="addToItinerary('${data.id}', '${data.name}', 'place')">➕ Roteiro</button>
-            </div>
+           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+
+    <button class="btn small ghost"
+        style="padding: 4px 8px; font-size: 0.75rem;"
+        onclick="focusOnMap(${data.lat}, ${data.lon}, '${data.name}')">
+        📍 Ver
+    </button>
+
+    <button class="btn small"
+        style="padding: 4px 8px; font-size: 0.75rem;"
+        onclick="addToItinerary('${data.id}', '${data.name}', 'place')">
+        ➕ Roteiro
+    </button>
+
+    <button class="btn small wishlist-btn"
+    onclick="saveToWishlist('${data.id}')">
+
+    ❤️ Salvar
+
+</button>
+</div>
         `;
         
         card.onclick = () => focusOnMap(data.lat, data.lon, data.name);

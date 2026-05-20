@@ -73,7 +73,7 @@ HTML
     .draft-tag {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--glass-border);
-        color: #fff;
+        color: var(--text-main);
         font-size: 0.8rem;
         padding: 6px 14px;
         border-radius: 100px;
@@ -138,7 +138,7 @@ HTML
     .itin-title {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--text-main);
     }
 
     .itin-date {
@@ -183,7 +183,7 @@ HTML
 
     .btn-danger-outline:hover {
         background: #ff4d4d;
-        color: #fff;
+        color: var(--text-main);
     }
 
     @media(max-width: 600px) {
@@ -228,7 +228,7 @@ HTML
     <div id="draft-alert" class="draft-alert">
       <div class="draft-head">
         <span class="draft-badge">Rascunho Ativo</span>
-        <h3 style="color: #fff; font-size: 1rem;">Você tem lugares selecionados!</h3>
+        <h3 style="color: var(--text-main); font-size: 1rem;">Você tem lugares selecionados!</h3>
       </div>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
         Finalize seu roteiro com os <strong id="draft-count" style="color: var(--accent-primary);">0</strong> locais escolhidos:
@@ -256,7 +256,7 @@ HTML
 
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/itinerary.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
+<script src="../assets/js/theme.js"></script>
 </body>
 </html>

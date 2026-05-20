@@ -63,7 +63,7 @@
         font-weight: 800;
         margin-bottom: 50px;
         letter-spacing: -1px;
-        color: #fff;
+        color: var(--text-main);
     }
 
     .features-grid {
@@ -101,7 +101,7 @@
         font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: 15px;
-        color: #fff;
+        color: var(--text-main);
     }
 
     .feature-card p {
@@ -179,6 +179,9 @@
     <li><a href="pages/events.html">Eventos</a></li>
     <li><a href="pages/profile.html">Perfil</a></li>
     <li><a href="pages/login.html">Login</a></li>
+    <button id="theme-toggle" class="theme-btn">
+    🌙
+</button>
   </ul>
 </nav>
 
@@ -195,7 +198,7 @@
           <a class="btn btn-primary" href="pages/explore.html" style="color: #000;">
             Começar a Explorar
           </a>
-          <a class="btn" href="pages/register.html" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--glass-border);">
+          <a class="btn" href="pages/register.html" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--glass-border);">
             Criar minha conta
           </a>
         </div>
@@ -245,7 +248,8 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/maps-integration.js"></script>
   <script src="assets/js/search-service.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
-  </body>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/wishlist.js"></script>
+</body>
 </html>

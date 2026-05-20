@@ -29,7 +29,7 @@
         font-size: 2.5rem;
         font-weight: 800;
         letter-spacing: -1.5px;
-        color: #fff;
+        color: var(--text-main);
     }
 
     /* Barra de Busca e Filtros Glass */
@@ -66,7 +66,7 @@
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--glass-border);
         border-radius: 14px;
-        color: #fff;
+        color: var(--text-main);
         padding: 14px 20px;
         transition: var(--transition-smooth);
     }
@@ -137,7 +137,10 @@
         <li><a href="itinerary.html">Roteiros</a></li>
         <li><a href="dashboard.html">Home</a></li>
         <li><a href="profile.html">Perfil</a></li>
-        <li><a href="#" id="logout-btn" style="color: #ff4d4d;">Sair</a></li>
+        <li><a href="#" id="logout-btn" style="color: var(--text-main);">Sair</a></li>
+        <button id="theme-toggle" class="theme-btn">
+    🌙
+</button>
       </ul>
     </header>
 
@@ -183,7 +186,8 @@
 
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/events.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
-  </body>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/wishlist.js"></script>
+</body>
 </html>
