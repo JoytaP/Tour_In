@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -193,7 +194,14 @@
 </head>
 <body>
 
-<div class="container">
+  <div id="vlibras-widget" class="enabled">
+    <div class="vlb-init-box"></div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  <div class="container">
   <header>
     <div class="logo">
         <a href="../index.html"><img src="../assets/img/logo.png" alt="Tour-In"></a>
@@ -248,5 +256,7 @@
 
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/itinerary.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
 </body>
 </html>

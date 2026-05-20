@@ -125,6 +125,13 @@
 </head>
 <body>
 
+  <div id="vlibras-widget" class="enabled">
+    <div class="vlb-init-box"></div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
   <div class="container-business">
     <header>
       <div class="logo">
@@ -251,23 +258,26 @@
         document.getElementById('comp-photos').click();
     });
   </script>
-</body>
-</html><script>
-// Pré-preenche dados vindos da tela de registro
-document.addEventListener('DOMContentLoaded', () => {
-    const prefill = sessionStorage.getItem('company_prefill');
-    if (prefill) {
-        try {
-            const data = JSON.parse(prefill);
-            const nameInput = document.getElementById('comp-name');
-            const emailInput = document.getElementById('comp-email');
-            const passwordInput = document.getElementById('comp-password');
-            if (nameInput && data.name) nameInput.value = data.name;
-            if (emailInput && data.email) emailInput.value = data.email;
-            if (passwordInput && data.password) passwordInput.value = data.password;
-            // Limpa após usar
-            sessionStorage.removeItem('company_prefill');
-        } catch(e) {}
-    }
-});
-</script>
+  <script>
+    // Pré-preenche dados vindos da tela de registro
+    document.addEventListener('DOMContentLoaded', () => {
+        const prefill = sessionStorage.getItem('company_prefill');
+        if (prefill) {
+            try {
+                const data = JSON.parse(prefill);
+                const nameInput = document.getElementById('comp-name');
+                const emailInput = document.getElementById('comp-email');
+                const passwordInput = document.getElementById('comp-password');
+                if (nameInput && data.name) nameInput.value = data.name;
+                if (emailInput && data.email) emailInput.value = data.email;
+                if (passwordInput && data.password) passwordInput.value = data.password;
+                // Limpa após usar
+                sessionStorage.removeItem('company_prefill');
+            } catch(e) {}
+        }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
+  </body>
+</html>

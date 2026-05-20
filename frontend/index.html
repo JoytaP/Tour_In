@@ -158,6 +158,14 @@
 </head>
 
 <body>
+
+  <div id="vlibras-widget" class="enabled">
+    <div class="vlb-init-box"></div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
   <div class="container">
     <header>
       <a href="index.html" class="brand">
@@ -237,5 +245,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/maps-integration.js"></script>
   <script src="assets/js/search-service.js"></script>
-</body>
+
+  <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
+  </body>
 </html>

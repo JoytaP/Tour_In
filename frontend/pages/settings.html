@@ -1,3 +1,8 @@
+Aqui está o código completo da página settings.html atualizado!
+
+Seguindo o padrão do teu projeto: o VLibras foi inserido logo após a etiqueta <body> e o Widget de Acessibilidade Geral antes da etiqueta </body>. A estrutura da página, como a barra lateral sticky, os toggles personalizados e a zona de perigo, mantiveram-se inalteradas.
+
+HTML
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -202,7 +207,14 @@
 </head>
 <body>
 
-<div class="container">
+  <div id="vlibras-widget" class="enabled">
+    <div class="vlb-init-box"></div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  <div class="container">
   <header>
     <div class="logo">
         <a href="../index.html"><img src="../assets/img/logo.png" alt="Tour-In"></a>
@@ -317,5 +329,7 @@
     });
   });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
 </body>
 </html>
