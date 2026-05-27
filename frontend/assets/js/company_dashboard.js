@@ -230,14 +230,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     function logout() {
-<<<<<<< HEAD
         localStorage.removeItem('token');
         localStorage.removeItem('company');
         localStorage.removeItem('user');
         localStorage.removeItem('temp_itinerary');
-=======
-        localStorage.removeItem('token'); localStorage.removeItem('company');
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
         window.location.href = 'login.html';
     }
 

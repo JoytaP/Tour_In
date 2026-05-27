@@ -1,6 +1,5 @@
 const wishlistModel = require('../models/wishlistModel');
 
-<<<<<<< HEAD
 // POST /api/wishlist/add  — requer token JWT
 exports.add = (req, res) => {
     const userId  = req.user.userId;           // vem do middleware auth
@@ -49,52 +48,3 @@ exports.remove = (req, res) => {
         res.json({ success: true });
     });
 };
-=======
-exports.add = (req, res) => {
-
-    const { user_id, place_id } = req.body;
-
-    wishlistModel.addToWishlist(
-        user_id,
-        place_id,
-        function(err) {
-
-            if (err) {
-
-                if (err.message.includes('UNIQUE')) {
-                    return res.status(400).json({
-                        error: 'Lugar já salvo'
-                    });
-                }
-
-                return res.status(500).json({
-                    error: err.message
-                });
-            }
-
-            res.json({
-                success: true
-            });
-        }
-    );
-};
-
-exports.getByUser = (req, res) => {
-
-    const userId = req.params.userId;
-
-    wishlistModel.getWishlistByUser(
-        userId,
-        (err, rows) => {
-
-            if (err) {
-                return res.status(500).json({
-                    error: err.message
-                });
-            }
-
-            res.json(rows);
-        }
-    );
-};
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

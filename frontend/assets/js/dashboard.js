@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ═══════════════════════════════════════════════════════
 // Tour.In — Dashboard Principal (v3)
 // ═══════════════════════════════════════════════════════
@@ -49,11 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ── Seções ───────────────────────────────────────────────────────────────
     renderUpcomingEvents(events);
     renderWishlistOnDash(wishlist);
-    // Fallback: se loadWishlistOnDashboard estiver disponível (wishlist.js) e
-    // a renderização anterior não populou nada, tenta novamente
-    if ((!Array.isArray(wishlist) || wishlist.length === 0) && typeof loadWishlistOnDashboard === 'function') {
-        loadWishlistOnDashboard();
-    }
     renderRecentReservations(reservations, userId);
     initMiniMap();
     initCategoryExplorer();
@@ -83,25 +77,10 @@ async function fetchWishlist() {
     if (!token) return [];
     try {
         const res = await fetch(`${API_URL_DASH}/wishlist/mine`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (res.status === 401) {
-            console.warn('[Dashboard] Token expirado ou inválido ao buscar wishlist.');
-            return [];
-        }
-        if (!res.ok) {
-            console.warn('[Dashboard] Erro ao buscar wishlist:', res.status, res.statusText);
-            return [];
-        }
-        const data = await res.json();
-        return Array.isArray(data) ? data : [];
-    } catch (err) {
-        console.error('[Dashboard] Falha na requisição da wishlist:', err);
-        return [];
-    }
+        return res.ok ? await res.json() : [];
+    } catch { return []; }
 }
 
 async function fetchUpcomingEvents() {
@@ -397,55 +376,3 @@ function dashToast(msg, type = 'success') {
     clearTimeout(t._t);
     t._t = setTimeout(() => { t.style.opacity = '0'; }, 3000);
 }
-
-// Expõe globalmente para que wishlist.js possa detectar que está no dashboard
-window.renderWishlistOnDash = renderWishlistOnDash;
-=======
-document.addEventListener('DOMContentLoaded', async () => {
-    if (!TourIn.isAuthenticated()) { window.location.href = 'login.html'; return; }
-
-    // ── Nome do usuário ──
-    const user = TourIn.getUser();
-    const userNameEl = document.getElementById('user-name');
-    if (userNameEl && user) userNameEl.textContent = user.name ? user.name.split(' ')[0] : 'Viajante';
-
-    // ── Carrega estatísticas reais ──
-    try {
-        const res = await fetch(`${API_URL}/users/profile`, { headers: TourIn.getAuthHeaders() });
-        if (res.ok) {
-            const data = await res.json();
-            animateValue('stat-itineraries', 0, data.itinerary_count || 0, 900);
-
-            // Preferências no dashboard
-            const prefs = Array.isArray(data.preferences) ? data.preferences : [];
-            const prefEl = document.getElementById('user-preferences');
-            if (prefEl) {
-                const labels = { gastronomy: '🍽️ Gastronomia', nightlife: '🎉 Noite', culture: '🎭 Cultura', nature: '🌳 Natureza' };
-                prefEl.innerHTML = prefs.length
-                    ? prefs.map(p => `<span class="pref-badge">${labels[p] || p}</span>`).join('')
-                    : '<span style="color:var(--text-muted);font-size:.85rem;">Nenhuma preferência definida. <a href="profile.html">Configurar</a></span>';
-            }
-        }
-    } catch (err) {
-        console.error('Erro ao carregar stats:', err);
-    }
-
-    // Itinerários salvos localmente
-    const draft = JSON.parse(localStorage.getItem('temp_itinerary') || '[]');
-    animateValue('stat-places', 0, draft.length, 900);
-    animateValue('stat-reviews', 0, 0, 900);
-
-    function animateValue(id, start, end, duration) {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        let startTimestamp = null;
-        const step = (ts) => {
-            if (!startTimestamp) startTimestamp = ts;
-            const progress = Math.min((ts - startTimestamp) / duration, 1);
-            obj.innerHTML = Math.floor(progress * (end - start) + start);
-            if (progress < 1) window.requestAnimationFrame(step);
-        };
-        window.requestAnimationFrame(step);
-    }
-});
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

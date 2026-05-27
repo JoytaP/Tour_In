@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ═══════════════════════════════════════════════════════
 // Tour.In — Wishlist (v3)
 // Todas as chamadas usam Bearer token JWT.
@@ -67,37 +66,10 @@ async function saveToWishlist(placeId, eventId = null, osmPlace = null) {
                 event_id: eventId || null
             })
         });
-=======
-async function saveToWishlist(placeId) {
-
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    if (!user) {
-        alert('Faça login primeiro');
-        return;
-    }
-
-    try {
-
-        const response = await fetch(
-            'http://localhost:3000/wishlist/add',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: user.id,
-                    place_id: placeId
-                })
-            }
-        );
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
 
         const data = await response.json();
 
         if (data.success) {
-<<<<<<< HEAD
             showToast(eventId ? '❤️ Evento salvo na Wishlist!' : '❤️ Local salvo na Wishlist!');
             _refreshWishlistCount();
         } else if (data.error?.includes('já salvo')) {
@@ -263,31 +235,8 @@ window.removeFromWishlist = removeFromWishlist;
 window.showToast          = showToast;
 
 // ── Inicializa wishlist na dashboard ──────────────────────────────────────────
-// Usa setTimeout para garantir que dashboard.js já registrou window.renderWishlistOnDash
-// antes de decidir se deve chamar loadWishlistOnDashboard.
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const hasDashboardWishlist = document.getElementById('home-wishlist');
-        const dashboardControlled  = typeof window.renderWishlistOnDash === 'function';
-
-        // Se estamos no dashboard.html, o dashboard.js é responsável pela wishlist.
-        // Não interferir para evitar sobrescrita.
-        if (hasDashboardWishlist && dashboardControlled) return;
-
-        // Em outras páginas que tenham #home-wishlist, carrega normalmente.
-        if (hasDashboardWishlist) {
-            loadWishlistOnDashboard();
-        }
-    }, 0);
+    // No dashboard.html, a wishlist é renderizada pelo dashboard.js — não duplicar
+    if (document.getElementById('home-wishlist') && typeof renderWishlistOnDash === 'function') return;
+    loadWishlistOnDashboard();
 });
-=======
-            alert('Lugar salvo ❤️');
-        } else {
-            alert(data.error);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

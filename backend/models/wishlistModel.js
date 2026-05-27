@@ -1,29 +1,13 @@
 const db = require('../config/database');
 
-<<<<<<< HEAD
 // ── Adicionar item à wishlist ─────────────────────────────────────────────────
 const addToWishlist = (userId, placeId, eventId, callback) => {
-    // SQLite trata NULL != NULL em constraints UNIQUE, portanto verificamos
-    // manualmente para evitar duplicatas de eventos ou lugares.
-    let checkQuery, checkParams;
-    if (placeId) {
-        checkQuery  = `SELECT id FROM wishlist WHERE user_id = ? AND place_id = ?`;
-        checkParams = [userId, placeId];
-    } else {
-        checkQuery  = `SELECT id FROM wishlist WHERE user_id = ? AND event_id = ?`;
-        checkParams = [userId, eventId];
-    }
-
-    db.get(checkQuery, checkParams, (err, existing) => {
-        if (err) return callback(err);
-        if (existing) {
-            const duplicateErr = new Error('UNIQUE constraint failed: item já está na wishlist.');
-            return callback(duplicateErr);
-        }
-        const query = `INSERT INTO wishlist (user_id, place_id, event_id) VALUES (?, ?, ?)`;
-        db.run(query, [userId, placeId || null, eventId || null], function(err) {
-            callback(err, this);
-        });
+    const query = `
+        INSERT INTO wishlist (user_id, place_id, event_id)
+        VALUES (?, ?, ?)
+    `;
+    db.run(query, [userId, placeId || null, eventId || null], function(err) {
+        callback(err, this);
     });
 };
 
@@ -80,32 +64,3 @@ const countByUser = (userId, callback) => {
 };
 
 module.exports = { addToWishlist, getWishlistByUser, isInWishlist, removeFromWishlist, countByUser };
-=======
-const addToWishlist = (userId, placeId, callback) => {
-
-    const query = `
-        INSERT INTO wishlist (user_id, place_id)
-        VALUES (?, ?)
-    `;
-
-    db.run(query, [userId, placeId], callback);
-};
-
-const getWishlistByUser = (userId, callback) => {
-
-    const query = `
-        SELECT places.*
-        FROM wishlist
-        JOIN places
-            ON wishlist.place_id = places.id
-        WHERE wishlist.user_id = ?
-    `;
-
-    db.all(query, [userId], callback);
-};
-
-module.exports = {
-    addToWishlist,
-    getWishlistByUser
-};
->>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
