@@ -1,5 +1,6 @@
 const db = require('../config/database');
 
+<<<<<<< HEAD
 // ── Adicionar item à wishlist ─────────────────────────────────────────────────
 const addToWishlist = (userId, placeId, eventId, callback) => {
     // SQLite trata NULL != NULL em constraints UNIQUE, portanto verificamos
@@ -79,3 +80,32 @@ const countByUser = (userId, callback) => {
 };
 
 module.exports = { addToWishlist, getWishlistByUser, isInWishlist, removeFromWishlist, countByUser };
+=======
+const addToWishlist = (userId, placeId, callback) => {
+
+    const query = `
+        INSERT INTO wishlist (user_id, place_id)
+        VALUES (?, ?)
+    `;
+
+    db.run(query, [userId, placeId], callback);
+};
+
+const getWishlistByUser = (userId, callback) => {
+
+    const query = `
+        SELECT places.*
+        FROM wishlist
+        JOIN places
+            ON wishlist.place_id = places.id
+        WHERE wishlist.user_id = ?
+    `;
+
+    db.all(query, [userId], callback);
+};
+
+module.exports = {
+    addToWishlist,
+    getWishlistByUser
+};
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

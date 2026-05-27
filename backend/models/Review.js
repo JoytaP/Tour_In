@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const db = require('../config/database');
 
 const Review = {
@@ -101,3 +102,24 @@ const Review = {
 };
 
 module.exports = Review;
+=======
+// tour-in/backend/models/Review.js
+
+// Importações e métodos para criar, buscar e calcular média de avaliações.
+const db = require('../config/database');
+
+class Review {
+    static async create({ userId, placeId, rating, comment }) {
+        const query = `
+            INSERT INTO reviews (user_id, place_id, rating, comment)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *;
+        `;
+        const values = [userId, placeId, rating, comment];
+        const { rows } = await db.query(query, values);
+        return rows[0];
+    }
+}
+
+module.exports = Review;
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

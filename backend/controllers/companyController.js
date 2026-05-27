@@ -14,12 +14,20 @@ async function getCoordinates(address) {
     return { lat: null, lon: null };
 }
 
+<<<<<<< HEAD
 // ─── 1. REGISTRAR + retorna token diretamente ─────────────────────────────────
 exports.register = async (req, res) => {
     try {
         const { name, cnpj, category, phone, address, website, description, email, password } = req.body;
         if (!name || !email || !password)
             return res.status(400).json({ message: 'Nome, e-mail e senha são obrigatórios.' });
+=======
+// ─── 1. REGISTRAR ─────────────────────────────────────────────────────────────
+exports.register = async (req, res) => {
+    try {
+        const { name, cnpj, category, phone, address, website, description, email, password } = req.body;
+        if (!name || !email || !password) return res.status(400).json({ message: 'Nome, e-mail e senha são obrigatórios.' });
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
 
         db.get(`SELECT id FROM users WHERE email = ?`, [email], async (err, row) => {
             if (err) return res.status(500).json({ error: err.message });
@@ -28,6 +36,10 @@ exports.register = async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
             const coords = await getCoordinates(address);
 
+<<<<<<< HEAD
+=======
+            // Fotos enviadas via multipart
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
             let photos = [];
             if (req.files && req.files.length > 0) {
                 photos = req.files.map(f => `/uploads/${f.filename}`);
@@ -37,6 +49,7 @@ exports.register = async (req, res) => {
                 (name, email, password, role, cnpj, category, phone, address, website, description, photos, lat, lon)
                 VALUES (?, ?, ?, 'company', ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
+<<<<<<< HEAD
             db.run(q,
                 [name, email, hashedPassword, cnpj || null, category || null, phone || null,
                  address || null, website || null, description || null,
@@ -59,6 +72,13 @@ exports.register = async (req, res) => {
                         token,
                         user: { id: newId, name, email, category: category || null, role: 'company' }
                     });
+=======
+            db.run(q, [name, email, hashedPassword, cnpj, category, phone,
+                       address, website, description, JSON.stringify(photos), coords.lat, coords.lon],
+                function(err) {
+                    if (err) return res.status(500).json({ error: err.message });
+                    res.status(201).json({ message: 'Empresa cadastrada com sucesso!', id: this.lastID });
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
                 }
             );
         });
@@ -83,10 +103,14 @@ exports.login = (req, res) => {
             process.env.JWT_SECRET || 'SEU_SEGREDO_JWT',
             { expiresIn: '24h' }
         );
+<<<<<<< HEAD
         res.json({
             token,
             user: { id: user.id, name: user.name, email: user.email, category: user.category, role: user.role }
         });
+=======
+        res.json({ token, user: { id: user.id, name: user.name, email: user.email, category: user.category } });
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
     });
 };
 
@@ -129,8 +153,15 @@ exports.updateProfile = async (req, res) => {
         }
     }
 
+<<<<<<< HEAD
     if (req.files && req.files.length > 0) {
         const newPhotos = req.files.map(f => `/uploads/${f.filename}`);
+=======
+    // Novas fotos enviadas
+    if (req.files && req.files.length > 0) {
+        const newPhotos = req.files.map(f => `/uploads/${f.filename}`);
+        // Busca fotos existentes e mescla
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
         db.get(`SELECT photos FROM users WHERE id = ?`, [userId], (err, row) => {
             let existing = [];
             try { existing = JSON.parse(row?.photos || '[]'); } catch(e) {}

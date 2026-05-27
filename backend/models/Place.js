@@ -3,6 +3,7 @@ const db = require('../config/database');
 const Place = {
     findAll: (category) => {
         return new Promise((resolve, reject) => {
+<<<<<<< HEAD
             let q = `SELECT p.*,
                 ROUND(AVG(r.rating),1) AS avg_rating,
                 COUNT(r.id) AS review_count
@@ -15,11 +16,21 @@ const Place = {
             }
             q += ` GROUP BY p.id ORDER BY avg_rating DESC NULLS LAST`;
             db.all(q, params, (err, rows) => {
+=======
+            let query = `SELECT * FROM places`;
+            let params = [];
+            if (category && category !== 'all') {
+                query += ` WHERE category = ?`;
+                params.push(category);
+            }
+            db.all(query, params, (err, rows) => {
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
                 if (err) reject(err);
                 else resolve(rows);
             });
         });
     },
+<<<<<<< HEAD
 
     findById: (id) => {
         return new Promise((resolve, reject) => {
@@ -72,10 +83,17 @@ const Place = {
                 place.name, place.description, place.category || 'general',
                 place.address, place.lat, place.lon, place.image_url, place.owner_id
             ], function(err) {
+=======
+    create: (place) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO places (name, description, category, address, owner_id) VALUES (?, ?, ?, ?, ?)`;
+            db.run(query, [place.name, place.description, place.category || 'general', place.address, place.owner_id], function(err) {
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
                 if (err) reject(err);
                 else resolve({ id: this.lastID, ...place });
             });
         });
+<<<<<<< HEAD
     },
 
     delete: (id, ownerId) => {
@@ -89,3 +107,9 @@ const Place = {
 };
 
 module.exports = Place;
+=======
+    }
+};
+
+module.exports = Place;
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

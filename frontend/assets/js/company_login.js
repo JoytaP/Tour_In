@@ -20,10 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 localStorage.setItem('token', data.token);
+<<<<<<< HEAD
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('company', JSON.stringify(data.user));
 
                 window.location.href = 'company_dasboard.html';
+=======
+                localStorage.setItem('company', JSON.stringify(data.user));
+
+                window.location.href = 'company_dashboard.html';
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
             } else {
                 alert(data.message || 'Erro no login');
             }

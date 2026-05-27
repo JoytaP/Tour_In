@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ═══════════════════════════════════════════════════════
 // Tour.In — Wishlist (v3)
 // Todas as chamadas usam Bearer token JWT.
@@ -66,10 +67,37 @@ async function saveToWishlist(placeId, eventId = null, osmPlace = null) {
                 event_id: eventId || null
             })
         });
+=======
+async function saveToWishlist(placeId) {
+
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+        alert('Faça login primeiro');
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            'http://localhost:3000/wishlist/add',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    place_id: placeId
+                })
+            }
+        );
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
 
         const data = await response.json();
 
         if (data.success) {
+<<<<<<< HEAD
             showToast(eventId ? '❤️ Evento salvo na Wishlist!' : '❤️ Local salvo na Wishlist!');
             _refreshWishlistCount();
         } else if (data.error?.includes('já salvo')) {
@@ -252,3 +280,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 0);
 });
+=======
+            alert('Lugar salvo ❤️');
+        } else {
+            alert(data.error);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

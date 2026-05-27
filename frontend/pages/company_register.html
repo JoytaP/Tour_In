@@ -124,10 +124,14 @@
   </style>
 </head>
 <body>
+<<<<<<< HEAD
   <button id="theme-toggle" class="theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema"
     style="position:fixed;top:20px;right:20px;z-index:1001;">
     🌙
   </button>
+=======
+
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
   <div id="vlibras-widget" class="enabled">
     <div class="vlb-init-box"></div>
   </div>
@@ -135,7 +139,10 @@
   <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
   </script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
   <div class="container-business">
     <header>
       <div class="logo">
@@ -146,6 +153,12 @@
       <nav>
         <ul class="nav-links">
           <li><a href="../index.html">Voltar ao Site</a></li>
+<<<<<<< HEAD
+=======
+          <button id="theme-toggle" class="theme-btn">
+    🌙
+</button>
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
         </ul>
       </nav>
     </header>
@@ -256,12 +269,17 @@
 
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/company_auth.js"></script>
+<<<<<<< HEAD
+=======
+  <script src="../assets/js/theme.js"></script>
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
   <script>
     // Script para disparar o input de arquivo ao clicar na área neon
     document.getElementById('upload-trigger').addEventListener('click', () => {
         document.getElementById('comp-photos').click();
     });
   </script>
+<<<<<<< HEAD
   <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
   <script src="../assets/js/theme.js"></script>
 </body>
@@ -284,3 +302,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+=======
+  <script>
+    // Pré-preenche dados vindos da tela de registro
+    document.addEventListener('DOMContentLoaded', () => {
+        const prefill = sessionStorage.getItem('company_prefill');
+        if (prefill) {
+            try {
+                const data = JSON.parse(prefill);
+                const nameInput = document.getElementById('comp-name');
+                const emailInput = document.getElementById('comp-email');
+                const passwordInput = document.getElementById('comp-password');
+                if (nameInput && data.name) nameInput.value = data.name;
+                if (emailInput && data.email) emailInput.value = data.email;
+                if (passwordInput && data.password) passwordInput.value = data.password;
+                // Limpa após usar
+                sessionStorage.removeItem('company_prefill');
+            } catch(e) {}
+        }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/accessibility-widgets@latest/widget.js"></script>
+  </body>
+</html>
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

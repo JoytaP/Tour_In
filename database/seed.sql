@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- ═══════════════════════════════════════════════════════
 -- Tour.In — Seed de Dados: Brasília, DF (Expandido)
 -- ═══════════════════════════════════════════════════════
@@ -137,3 +138,10 @@ INSERT OR IGNORE INTO events (title, description, date, location, category, lat,
 ('Festa Junina da Esplanada', 'A maior festa junina do Centro-Oeste na Esplanada com forró, quadrilha e comidas típicas.', '2025-06-14 16:00:00', 'Esplanada dos Ministérios, Brasília - DF', 'nightlife', -15.7998, -47.8645, NULL, NULL),
 ('Halloween BSB', 'Festa temática de Halloween com decoração especial e concurso de fantasias no Lago Norte.', '2025-10-31 20:00:00', 'Pontão do Lago Sul, Brasília - DF', 'nightlife', -15.8300, -47.8650, NULL, NULL),
 ('Virada Cultural de Brasília', 'Maratona cultural de 24 horas com shows, exposições e performances gratuitas pela cidade.', '2025-11-22 18:00:00', 'Plano Piloto, Brasília - DF', 'culture', -15.7942, -47.8825, NULL, NULL);
+=======
+INSERT INTO places (name, description, category, latitude, longitude, rating) VALUES 
+('Museu de Arte Moderna', 'Exposições de arte contemporânea e arquitetura icônica.', 'culture', -23.587416, -46.657634, 4.8),
+('Bistrô Sabor & Arte', 'Gastronomia francesa com toques brasileiros.', 'gastronomy', -23.550520, -46.633309, 4.5),
+('Parque Ibirapuera', 'O maior parque urbano da cidade, ideal para esportes.', 'nature', -23.58741, -46.65763, 4.9),
+('Bar do Jazz', 'Música ao vivo e ótimos drinks.', 'nightlife', -23.56141, -46.65588, 4.2);
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

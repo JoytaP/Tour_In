@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ${event.description || 'Sem descrição disponível.'}
                 </p>
 
+<<<<<<< HEAD
                 <div style="margin-top: auto; padding-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
                     <button class="btn small" style="flex:1;min-width:80px;" onclick="addToItinerary('${event.id}', '${event.title}', 'event')">
                         ➕ Roteiro
@@ -106,6 +107,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         onclick="openReservationModal(${event.id}, 'event', '${(event.title||'').replace(/'/g,'\'')}')"
                         aria-label="Reservar evento">
                         📅
+=======
+                <div style="margin-top: auto; padding-top: 15px;">
+                    <button class="btn small w-100" onclick="addToItinerary('${event.id}', '${event.title}', 'event')">
+                        ➕ Adicionar ao Roteiro
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
                     </button>
                 </div>
             `;

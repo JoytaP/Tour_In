@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 const multer = require('multer');
 const path = require('path');
 const auth = require('../middleware/auth');
@@ -26,3 +27,10 @@ router.post('/:id/reviews',           auth, ctrl.addReview);
 router.delete('/:id/reviews/:reviewId', auth, ctrl.deleteReview);
 
 module.exports = router;
+=======
+const placeController = require('../controllers/placeController');
+
+router.get('/', placeController.getAll);
+
+module.exports = router;
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c

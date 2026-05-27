@@ -1,4 +1,5 @@
 const Place = require('../models/Place');
+<<<<<<< HEAD
 const Review = require('../models/Review');
 const multer = require('multer');
 const path = require('path');
@@ -15,10 +16,18 @@ exports.getAll = async (req, res) => {
         } else {
             places = await Place.findAll(category);
         }
+=======
+
+exports.getAll = async (req, res) => {
+    try {
+        const category = req.query.category;
+        const places = await Place.findAll(category);
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
         res.json(places);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+<<<<<<< HEAD
 };
 
 // ── GET /api/places/:id ──────────────────────────────────────────────────────
@@ -114,3 +123,6 @@ exports.deleteReview = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+=======
+};
+>>>>>>> fb3469b4621353d6d966287860108b85af1cb28c
