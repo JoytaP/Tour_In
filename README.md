@@ -72,7 +72,6 @@ O frontend é uma aplicação estática com HTML, CSS e JavaScript puro.
     ```bash
     cd Tour_In/frontend
     ```
-<<<<<<< HEAD
 
 2. Abra o arquivo `index.html` com a extensão **Live Server** no VS Code (clique com o botão direito → *Open with Live Server*).
 
@@ -103,29 +102,3 @@ Tour_In/
     ├── pages/
     └── index.html
 ```
-=======
-2.  Abra `index.html` no seu navegador.
-3.  **Para o Mapa**: É necessário substituir `YOUR_API_KEY` no arquivo `frontend/pages/explore.html` pela sua chave da API do Google Maps (ou configurar uma alternativa como Leaflet no `maps-integration.js`).
-
-## 4. Extensões necessárias no VS Code
-O projeto é um Node.js + Express no backend e HTML/CSS/JS puro no frontend. As extensões essenciais são:
-1. REST Client (ou Thunder Client)
-Para testar os casos de teste da API diretamente no VS Code, sem precisar do Postman.
-
-Nome: REST Client (de Huachao Mao) ou Thunder Client
-
-2. SQLite Viewer
-O banco de dados do projeto é um arquivo .db (SQLite). Essa extensão permite visualizar os dados sem instalar nada extra.
-
-Nome: SQLite Viewer (de Florian Klampfer)
-
-3. Live Server
-Para abrir o frontend (HTML estático) com reload automático no navegador.
-
-Nome: Live Server (de Ritwick Dey)
-
-4. ESLint (recomendada)
-O projeto usa JavaScript puro, então ajuda a pegar erros no código do backend.
-
-Nome: ESLint
->>>>>>> 56af7e7312c6bad941715f189f61b3f7d1f00567
