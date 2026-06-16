@@ -18,6 +18,9 @@ const migrations = [
     'ALTER TABLE users ADD COLUMN photos TEXT',
     'ALTER TABLE users ADD COLUMN lat REAL',
     'ALTER TABLE users ADD COLUMN lon REAL',
+    // Novas colunas
+    'ALTER TABLE users ADD COLUMN operating_hours TEXT',
+    'ALTER TABLE users ADD COLUMN profile_views INTEGER DEFAULT 0',
 ];
 
 db.serialize(() => {

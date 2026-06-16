@@ -1,0 +1,16 @@
+// backend/utils/AppError.js
+// Erro operacional padronizado, com status HTTP associado.
+// Usado pelos controllers para sinalizar erros "esperados"
+// (validação, não encontrado, não autorizado, etc.) de forma
+// que o middleware central de erros responda corretamente.
+
+class AppError extends Error {
+    constructor(message, statusCode = 500) {
+        super(message);
+        this.statusCode = statusCode;
+        this.isOperational = true;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+module.exports = AppError;

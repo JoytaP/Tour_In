@@ -1,15 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const itineraryController = require('../controllers/itineraryController');
-const auth = require('../middleware/auth');
+const { requireAuth } = require('../middleware/auth');
 
-// Rota para CRIAR (POST /api/itineraries)
-router.post('/', auth, itineraryController.saveItinerary);
-
-// Rota para LISTAR (GET /api/itineraries)
-router.get('/', auth, itineraryController.getMyItineraries);
-
-// --- NOVA ROTA PARA DELETAR (DELETE /api/itineraries/:id) ---
-router.delete('/:id', auth, itineraryController.deleteItinerary);
+router.post('/', requireAuth, itineraryController.saveItinerary);
+router.get('/', requireAuth, itineraryController.getMyItineraries);
+router.delete('/:id', requireAuth, itineraryController.deleteItinerary);
 
 module.exports = router;

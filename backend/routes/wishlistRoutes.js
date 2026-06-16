@@ -1,14 +1,12 @@
 const express = require('express');
-const router  = express.Router();
-const ctrl    = require('../controllers/wishlistController');
-const auth    = require('../middleware/auth');
+const router = express.Router();
+const ctrl = require('../controllers/wishlistController');
+const { requireAuth } = require('../middleware/auth');
+const { validateWishlistAdd } = require('../middleware/validation');
 
 // Rotas protegidas por JWT
-router.post('/add',         auth, ctrl.add);       // POST   /api/wishlist/add
-router.get('/mine',         auth, ctrl.getMine);   // GET    /api/wishlist/mine
-router.delete('/:wishlistId', auth, ctrl.remove);  // DELETE /api/wishlist/:id
-
-// Rota legacy sem token (leitura pública por userId — mantida para compatibilidade)
-router.get('/:userId', ctrl.getByUser);            // GET    /api/wishlist/:userId
+router.post('/add', requireAuth, validateWishlistAdd, ctrl.add);
+router.get('/mine', requireAuth, ctrl.getMine);
+router.delete('/:wishlistId', requireAuth, ctrl.remove);
 
 module.exports = router;

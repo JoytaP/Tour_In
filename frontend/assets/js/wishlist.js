@@ -4,7 +4,7 @@
 // Suporta lugares, eventos e estabelecimentos OSM.
 // ═══════════════════════════════════════════════════════
 
-const WISHLIST_API = 'http://localhost:3000/api/wishlist';
+const WISHLIST_API = (typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:3000/api') + '/wishlist';
 
 // ── Helper: headers com token ─────────────────────────────────────────────────
 function wishlistHeaders() {
@@ -31,7 +31,7 @@ async function saveToWishlist(placeId, eventId = null, osmPlace = null) {
     if (osmPlace && !placeId && !eventId) {
         try {
             // Insere o lugar no banco de dados via API de places
-            const insertRes = await fetch('http://localhost:3000/api/places', {
+            const insertRes = await fetch(`${typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:3000/api'}/places`, {
                 method: 'POST',
                 headers: wishlistHeaders(),
                 body: JSON.stringify({

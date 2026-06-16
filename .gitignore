@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente (segredos)
+backend/.env
+
+# Banco de dados local
+database/*.db
+database/*.sqlite
+
+# Uploads de usuários (não versionar conteúdo dinâmico)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db

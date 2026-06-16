@@ -1,16 +1,15 @@
 const db = require('../config/database');
 
-const createReservation = (userId, placeId, eventId, date, people, notes, callback) => {
-    const q = `INSERT INTO reservations (user_id, place_id, event_id, reservation_date, people, notes)
-               VALUES (?, ?, ?, ?, ?, ?)`;
-    db.run(q, [userId, placeId || null, eventId || null, date, people || 1, notes || ''], function(err) {
-        callback(err, this);
-    });
-};
+const createReservation = (userId, placeId, eventId, date, people, notes) =>
+    db.runAsync(
+        `INSERT INTO reservations (user_id, place_id, event_id, reservation_date, people, notes)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [userId, placeId || null, eventId || null, date, people || 1, notes || '']
+    );
 
-const getUserReservations = (userId, callback) => {
-    const q = `
-        SELECT r.*,
+const getUserReservations = (userId) =>
+    db.allAsync(
+        `SELECT r.*,
             COALESCE(p.name, e.title) AS name,
             COALESCE(p.address, e.location) AS location,
             COALESCE(p.category, e.category) AS category,
@@ -19,14 +18,11 @@ const getUserReservations = (userId, callback) => {
         LEFT JOIN places p ON r.place_id = p.id
         LEFT JOIN events e ON r.event_id = e.id
         WHERE r.user_id = ?
-        ORDER BY r.reservation_date ASC`;
-    db.all(q, [userId], callback);
-};
+        ORDER BY r.reservation_date ASC`,
+        [userId]
+    );
 
-const cancelReservation = (id, userId, callback) => {
-    db.run(`UPDATE reservations SET status='cancelled' WHERE id=? AND user_id=?`, [id, userId], function(err) {
-        callback(err, this);
-    });
-};
+const cancelReservation = (id, userId) =>
+    db.runAsync(`UPDATE reservations SET status='cancelled' WHERE id=? AND user_id=?`, [id, userId]);
 
 module.exports = { createReservation, getUserReservations, cancelReservation };

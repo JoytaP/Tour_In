@@ -1,8 +1,11 @@
-require('dotenv').config();
+// backend/server.js
+const env = require('./config/env'); // valida variáveis de ambiente antes de tudo
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
+
+const { securityHeaders, apiLimiter, authLimiter, sanitizeInput } = require('./middleware/security');
+const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
@@ -15,41 +18,58 @@ const reservationRoutes = require('./routes/reservationRoutes');
 
 const app = express();
 
-// --- CONFIGURAÇÃO DA PASTA DE UPLOADS ---
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir);
-    console.log('Pasta "uploads" criada com sucesso.');
-}
+// Confia no proxy (necessário para rate-limit/IP corretos atrás de proxies/load balancers)
+app.set('trust proxy', 1);
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// ── Segurança de cabeçalhos HTTP ──────────────────────────────────────────
+app.use(securityHeaders);
 
-// Servir arquivos estáticos (fotos)
-app.use('/uploads', express.static(uploadDir));
+// ── CORS ───────────────────────────────────────────────────────────────
+app.use(cors({ origin: env.corsOrigin, credentials: true }));
 
-// Servir arquivos do Frontend
+// ── Parsing do corpo da requisição ────────────────────────────────────────
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// ── Sanitização básica de entrada ─────────────────────────────────────────
+app.use(sanitizeInput);
+
+// ── Rate limiting geral para toda a API ───────────────────────────────────
+app.use('/api', apiLimiter);
+
+// ── Arquivos estáticos ─────────────────────────────────────────────────────
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Rotas da API
-app.use('/api/auth', authRoutes);
+// ── Rotas da API ───────────────────────────────────────────────────────────
+// Rate limit mais restrito em rotas de autenticação (login/registro)
+app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/companies', authLimiter, companyRoutes);
+
 app.use('/api/users', userRoutes);
 app.use('/api/places', placeRoutes);
-app.use('/api/companies', companyRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/itineraries', itineraryRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/reservations', reservationRoutes);
 
-// Rota padrão para SPA
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
-      return res.status(404).json({ message: 'Não encontrado' });
-  }
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+// ── Healthcheck ─────────────────────────────────────────────────────────────
+app.get('/api/health', (req, res) => res.json({ status: 'ok', env: env.nodeEnv }));
+
+// ── Fallback SPA para rotas de frontend ─────────────────────────────────────
+app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+        return next();
+    }
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// ── Tratamento de erros (sempre por último) ─────────────────────────────────
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(env.port, () => {
+    console.log(`Servidor rodando na porta ${env.port} [${env.nodeEnv}]`);
+});
+
+module.exports = app;

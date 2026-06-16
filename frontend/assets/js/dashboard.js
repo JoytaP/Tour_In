@@ -2,7 +2,8 @@
 // Tour.In — Dashboard Principal (v3)
 // ═══════════════════════════════════════════════════════
 
-const API_URL_DASH = 'http://localhost:3000/api';
+// Reaproveita a configuração central definida em main.js (carregado antes deste arquivo)
+const API_URL_DASH = typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:3000/api';
 
 // ── Extrai userId do token JWT (sem depender de user.id no localStorage) ──────
 function getUserIdFromToken() {
