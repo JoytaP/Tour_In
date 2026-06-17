@@ -24,7 +24,11 @@ const storage = multer.diskStorage({
 });
 
 function fileFilter(req, file, cb) {
-    if (!ALLOWED_MIME.has(file.mimetype)) {
+    const allowedExtensions = /\.(jpg|jpeg|png|webp|gif)$/i;
+    const mimeOk = ALLOWED_MIME.has(file.mimetype);
+    const extOk = allowedExtensions.test(file.originalname);
+
+    if (!mimeOk && !extOk) {
         return cb(new AppError('Tipo de arquivo não permitido. Envie apenas imagens (jpeg, png, webp, gif).', 400));
     }
     cb(null, true);
