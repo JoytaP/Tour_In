@@ -1,31 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const auth = require('../middleware/auth');
+const upload = require('../middleware/upload');
+const { requireAuth, requireRole } = require('../middleware/auth');
+const { validateCompanyRegistration, validateLogin, validateEventCreate } = require('../middleware/validation');
 const ctrl = require('../controllers/companyController');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/'),
-    filename: (req, file, cb) => {
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, unique + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB
-
 // ── Públicas ──
-router.post('/register', upload.array('photos', 10), ctrl.register);
-router.post('/login', ctrl.login);
+router.post('/register', upload.array('photos', 10), validateCompanyRegistration, ctrl.register);
+router.post('/login', validateLogin, ctrl.login);
 router.get('/search', ctrl.search);
 
-// ── Protegidas ──
-router.get('/profile', auth, ctrl.getProfile);
-router.put('/profile', auth, upload.array('photos', 10), ctrl.updateProfile);
-router.delete('/profile/photo', auth, ctrl.removePhoto);
+// ── Protegidas (somente empresas) ──
+router.get('/profile', requireAuth, requireRole('company'), ctrl.getProfile);
+router.put('/profile', requireAuth, requireRole('company'), upload.array('photos', 10), ctrl.updateProfile);
+router.delete('/profile/photo', requireAuth, requireRole('company'), ctrl.removePhoto);
 
-router.get('/events', auth, ctrl.getMyEvents);
-router.post('/events', auth, upload.single('image'), ctrl.createEvent);
-router.delete('/events/:eventId', auth, ctrl.deleteEvent);
+router.get('/events', requireAuth, requireRole('company'), ctrl.getMyEvents);
+router.post('/events', requireAuth, requireRole('company'), upload.single('image'), validateEventCreate, ctrl.createEvent);
+router.put('/events/:eventId', requireAuth, requireRole('company'), upload.single('image'), ctrl.updateEvent);
+router.delete('/events/:eventId', requireAuth, requireRole('company'), ctrl.deleteEvent);
+
+router.get('/reviews', requireAuth, requireRole('company'), ctrl.getCompanyReviews);
+router.put('/hours', requireAuth, requireRole('company'), ctrl.updateHours);
+router.post('/:companyId/views', ctrl.incrementViews);
 
 module.exports = router;

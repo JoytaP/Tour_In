@@ -1,50 +1,49 @@
 const wishlistModel = require('../models/wishlistModel');
+const AppError = require('../utils/AppError');
+const asyncHandler = require('../utils/asyncHandler');
 
-// POST /api/wishlist/add  — requer token JWT
-exports.add = (req, res) => {
-    const userId  = req.user.userId;           // vem do middleware auth
+// POST /api/wishlist/add — requer token JWT
+exports.add = asyncHandler(async (req, res) => {
+    const userId = req.user.userId;
     const { place_id, event_id } = req.body;
 
-    if (!userId || (!place_id && !event_id)) {
-        return res.status(400).json({ error: 'Envie place_id ou event_id.' });
+    try {
+        await wishlistModel.addToWishlist(userId, place_id || null, event_id || null);
+    } catch (err) {
+        if (err.message && err.message.includes('UNIQUE')) {
+            throw new AppError('Item já salvo na wishlist.', 400);
+        }
+        throw err;
     }
 
-    wishlistModel.addToWishlist(userId, place_id || null, event_id || null, (err) => {
-        if (err) {
-            if (err.message && err.message.includes('UNIQUE')) {
-                return res.status(400).json({ error: 'Item já salvo na wishlist.' });
-            }
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ success: true, message: 'Salvo na wishlist com sucesso!' });
-    });
-};
+    res.json({ success: true, message: 'Salvo na wishlist com sucesso!' });
+});
 
-// GET /api/wishlist  — requer token JWT (retorna wishlist do próprio usuário)
-exports.getMine = (req, res) => {
-    wishlistModel.getWishlistByUser(req.user.userId, (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
-};
+// GET /api/wishlist/mine — requer token JWT
+exports.getMine = asyncHandler(async (req, res) => {
+    const rows = await wishlistModel.getWishlistByUser(req.user.userId);
+    res.json(rows);
+});
 
-// GET /api/wishlist/:userId  — compatibilidade com chamadas legacy (sem token)
-exports.getByUser = (req, res) => {
-    wishlistModel.getWishlistByUser(req.params.userId, (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
-};
+// GET /api/wishlist/:userId — compatibilidade legacy.
+// Agora restringe: só retorna dados se o userId solicitado for o do próprio
+// usuário autenticado, evitando exposição da wishlist de terceiros.
+exports.getByUser = asyncHandler(async (req, res) => {
+    if (!req.user || String(req.user.userId) !== String(req.params.userId)) {
+        throw new AppError('Acesso não autorizado.', 403);
+    }
+    const rows = await wishlistModel.getWishlistByUser(req.params.userId);
+    res.json(rows);
+});
 
-// DELETE /api/wishlist/:wishlistId  — requer token JWT
-exports.remove = (req, res) => {
-    const userId     = req.user.userId;
+// DELETE /api/wishlist/:wishlistId — requer token JWT
+exports.remove = asyncHandler(async (req, res) => {
+    const userId = req.user.userId;
     const wishlistId = req.params.wishlistId;
 
-    wishlistModel.removeFromWishlist(wishlistId, userId, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (result && result.changes === 0)
-            return res.status(404).json({ error: 'Item não encontrado ou não pertence a você.' });
-        res.json({ success: true });
-    });
-};
+    const result = await wishlistModel.removeFromWishlist(wishlistId, userId);
+    if (result.changes === 0) {
+        throw new AppError('Item não encontrado ou não pertence a você.', 404);
+    }
+    res.json({ success: true });
+});

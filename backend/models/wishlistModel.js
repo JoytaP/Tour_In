@@ -1,20 +1,14 @@
 const db = require('../config/database');
 
-// ── Adicionar item à wishlist ─────────────────────────────────────────────────
-const addToWishlist = (userId, placeId, eventId, callback) => {
-    const query = `
-        INSERT INTO wishlist (user_id, place_id, event_id)
-        VALUES (?, ?, ?)
-    `;
-    db.run(query, [userId, placeId || null, eventId || null], function(err) {
-        callback(err, this);
-    });
-};
+const addToWishlist = (userId, placeId, eventId) =>
+    db.runAsync(
+        `INSERT INTO wishlist (user_id, place_id, event_id) VALUES (?, ?, ?)`,
+        [userId, placeId || null, eventId || null]
+    );
 
-// ── Buscar wishlist completa (lugares + eventos, com coords e endereço) ────────
-const getWishlistByUser = (userId, callback) => {
-    const query = `
-        SELECT
+const getWishlistByUser = (userId) =>
+    db.allAsync(
+        `SELECT
             w.id            AS wishlist_id,
             w.place_id,
             w.event_id,
@@ -32,35 +26,21 @@ const getWishlistByUser = (userId, callback) => {
         LEFT JOIN places p ON w.place_id = p.id
         LEFT JOIN events e ON w.event_id = e.id
         WHERE w.user_id = ?
-        ORDER BY w.created_at DESC
-    `;
-    db.all(query, [userId], callback);
-};
+        ORDER BY w.created_at DESC`,
+        [userId]
+    );
 
-// ── Verificar se item já está na wishlist ─────────────────────────────────────
-const isInWishlist = (userId, placeId, eventId, callback) => {
-    let query, params;
+const isInWishlist = (userId, placeId, eventId) => {
     if (placeId) {
-        query  = `SELECT id FROM wishlist WHERE user_id = ? AND place_id = ?`;
-        params = [userId, placeId];
-    } else {
-        query  = `SELECT id FROM wishlist WHERE user_id = ? AND event_id = ?`;
-        params = [userId, eventId];
+        return db.getAsync(`SELECT id FROM wishlist WHERE user_id = ? AND place_id = ?`, [userId, placeId]);
     }
-    db.get(query, params, (err, row) => callback(err, !!row));
+    return db.getAsync(`SELECT id FROM wishlist WHERE user_id = ? AND event_id = ?`, [userId, eventId]);
 };
 
-// ── Remover da wishlist ───────────────────────────────────────────────────────
-const removeFromWishlist = (wishlistId, userId, callback) => {
-    const query = `DELETE FROM wishlist WHERE id = ? AND user_id = ?`;
-    db.run(query, [wishlistId, userId], function(err) {
-        callback(err, this);
-    });
-};
+const removeFromWishlist = (wishlistId, userId) =>
+    db.runAsync(`DELETE FROM wishlist WHERE id = ? AND user_id = ?`, [wishlistId, userId]);
 
-// ── Contar itens na wishlist ──────────────────────────────────────────────────
-const countByUser = (userId, callback) => {
-    db.get(`SELECT COUNT(*) AS count FROM wishlist WHERE user_id = ?`, [userId], callback);
-};
+const countByUser = (userId) =>
+    db.getAsync(`SELECT COUNT(*) AS count FROM wishlist WHERE user_id = ?`, [userId]);
 
 module.exports = { addToWishlist, getWishlistByUser, isInWishlist, removeFromWishlist, countByUser };

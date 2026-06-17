@@ -1,4 +1,4 @@
-const RESERVATION_API = 'http://localhost:3000/api/reservations';
+const RESERVATION_API = (typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:3000/api') + '/reservations';
 
 // =========================
 // MODAL DE RESERVA
@@ -190,12 +190,16 @@ async function loadReservationsOnDashboard() {
 async function cancelReservation(reservationId) {
     if (!confirm('Cancelar esta reserva?')) return;
     const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
 
     try {
         const response = await fetch(`${RESERVATION_API}/${reservationId}/cancel`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: user.id })
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({ user_id: user?.id })
         });
         const data = await response.json();
         if (data.success) {

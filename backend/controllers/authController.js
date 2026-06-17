@@ -1,48 +1,50 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const env = require('../config/env');
+const AppError = require('../utils/AppError');
+const asyncHandler = require('../utils/asyncHandler');
 
-exports.register = async (req, res) => {
-    try {
-        const { name, email, password, role } = req.body;
-        
-        // Verificar se usuário existe
-        const existingUser = await User.findByEmail(email);
-        if (existingUser) {
-            return res.status(400).json({ message: 'E-mail já cadastrado' });
-        }
+exports.register = asyncHandler(async (req, res) => {
+    const { name, email, password, role } = req.body;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, email, password: hashedPassword, role });
-
-        res.status(201).json({ message: 'Usuário criado com sucesso!' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    const existingUser = await User.findByEmail(email);
+    if (existingUser) {
+        throw new AppError('E-mail já cadastrado.', 400);
     }
-};
 
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findByEmail(email);
+    const allowedRoles = ['user', 'company'];
+    const finalRole = allowedRoles.includes(role) ? role : 'user';
 
-        if (!user) {
-            return res.status(401).json({ message: 'Credenciais inválidas' });
-        }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({ name, email, password: hashedPassword, role: finalRole });
 
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
-            return res.status(401).json({ message: 'Credenciais inválidas' });
-        }
+    res.status(201).json({ success: true, message: 'Usuário criado com sucesso!' });
+});
 
-        const token = jwt.sign(
-            { userId: user.id, email: user.email, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
+exports.login = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findByEmail(email);
 
-        res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    // Mensagem genérica para não revelar se o e-mail existe ou não.
+    if (!user) {
+        throw new AppError('Credenciais inválidas.', 401);
     }
-};
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+        throw new AppError('Credenciais inválidas.', 401);
+    }
+
+    const token = jwt.sign(
+        { userId: user.id, email: user.email, role: user.role },
+        env.jwtSecret,
+        { expiresIn: env.jwtExpiresIn }
+    );
+
+    res.json({
+        success: true,
+        token,
+        user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    });
+});

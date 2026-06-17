@@ -1,5 +1,10 @@
 // Configuração Global
-const API_URL = 'http://localhost:3000/api';
+// Em produção o frontend é servido pelo próprio backend Express, então a API
+// fica sempre na mesma origem. Em desenvolvimento local (ex.: abrindo o HTML
+// direto via file:// ou outra porta), cai no fallback para localhost:3000.
+const API_URL = (window.location.origin && window.location.origin !== 'null' && window.location.protocol !== 'file:')
+    ? `${window.location.origin}/api`
+    : 'http://localhost:3000/api';
 
 const TourIn = {
     // --- AUTENTICAÇÃO ---

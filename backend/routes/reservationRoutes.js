@@ -1,23 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/reservationController');
-const jwt = require('jsonwebtoken');
+const { requireAuth, optionalAuth } = require('../middleware/auth');
+const { validateReservation } = require('../middleware/validation');
 
-// Middleware opcional: extrai userId do token se presente, mas não bloqueia sem token
-function optionalAuth(req, res, next) {
-    try {
-        const authHeader = req.headers.authorization;
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-            const token = authHeader.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'SEU_SEGREDO_JWT');
-            req.user = decoded;
-        }
-    } catch (e) { /* ignora token inválido */ }
-    next();
-}
+// Criação aceita usuário autenticado OU anônimo (compatibilidade legacy do front).
+router.post('/create', optionalAuth, validateReservation, ctrl.create);
 
-router.post('/create', optionalAuth, ctrl.create);
-router.get('/:userId', ctrl.getByUser);
-router.patch('/:id/cancel', ctrl.cancel);
+// Listagem e cancelamento exigem o usuário autenticado dono da reserva.
+router.get('/mine', requireAuth, ctrl.getMine);
+router.patch('/:id/cancel', requireAuth, ctrl.cancel);
+
+// Rota legacy mantida para compatibilidade com chamadas antigas do front
+// (sem token), porém agora reforça que userId precisa corresponder ao token
+// quando presente — ver controller.
+router.get('/:userId', optionalAuth, ctrl.getByUser);
 
 module.exports = router;

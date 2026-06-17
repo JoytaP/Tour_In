@@ -332,7 +332,7 @@ out body 60;`;
 
         let imgHtml = '';
         if (place.image_url) {
-            const src = place.image_url.startsWith('/') ? `http://localhost:3000${place.image_url}` : place.image_url;
+            const src = place.image_url.startsWith('/') ? `${(typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:3000/api').replace(/\/api$/, '')}${place.image_url}` : place.image_url;
             imgHtml = `<img src="${src}" style="width:100%;height:100px;object-fit:cover;border-radius:10px;margin-bottom:10px;" onerror="this.style.display='none'">`;
         }
 
