@@ -12,6 +12,24 @@ const db = new sqlite3.Database(env.dbPath, (err) => {
         // Garante integridade referencial (chaves estrangeiras) no SQLite,
         // que vêm desativadas por padrão.
         db.run('PRAGMA foreign_keys = ON');
+
+        // ── Migration automática ────────────────────────────────────────────
+        // Adiciona colunas novas sem apagar dados existentes.
+        // Não usa "IF NOT EXISTS" pois versões antigas do SQLite (< 3.37)
+        // não suportam essa sintaxe no ALTER TABLE.
+        const addColumn = (col, def) => {
+            db.run(`ALTER TABLE users ADD COLUMN ${col} ${def}`, (err) => {
+                if (err && !err.message.includes('duplicate column name')) {
+                    console.error(`[Migration] Falha ao adicionar ${col}:`, err.message);
+                }
+            });
+        };
+
+        db.serialize(() => {
+            addColumn('operating_hours', 'TEXT');
+            addColumn('profile_views', 'INTEGER DEFAULT 0');
+        });
+        // ───────────────────────────────────────────────────────────────────
     }
 });
 
