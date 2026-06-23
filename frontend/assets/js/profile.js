@@ -92,11 +92,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showToast('Perfil atualizado com sucesso! ✅');
                     loadProfile();
                 } else {
-                    alert(data.message || 'Erro ao atualizar perfil.');
+                    showToast(data.message || 'Erro ao atualizar perfil.', true);
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erro de conexão.');
+                showToast('Erro de conexão.', true);
             } finally {
                 btn.disabled = false;
                 btn.textContent = originalText;

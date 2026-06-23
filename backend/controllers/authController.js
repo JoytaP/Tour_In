@@ -6,18 +6,18 @@ const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 
 exports.register = asyncHandler(async (req, res) => {
-    const { name, email, password, role } = req.body;
+    // O campo `role` enviado pelo cliente é ignorado intencionalmente.
+    // Novos usuários são sempre criados como 'user'.
+    // O cadastro de empresa usa o endpoint exclusivo /api/companies/register.
+    const { name, email, password } = req.body;
 
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
         throw new AppError('E-mail já cadastrado.', 400);
     }
 
-    const allowedRoles = ['user', 'company'];
-    const finalRole = allowedRoles.includes(role) ? role : 'user';
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword, role: finalRole });
+    await User.create({ name, email, password: hashedPassword, role: 'user' });
 
     res.status(201).json({ success: true, message: 'Usuário criado com sucesso!' });
 });

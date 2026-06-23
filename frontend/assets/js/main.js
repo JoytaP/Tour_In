@@ -40,7 +40,7 @@ const TourIn = {
     // --- NOVA FUNÇÃO: ADICIONAR AO ROTEIRO (GLOBAL) ---
     addToItinerary: (id, title, type = 'event') => {
         if (!TourIn.isAuthenticated()) {
-            alert('Você precisa estar logado para salvar itens!');
+            showToast('Você precisa estar logado para salvar itens!', true);
             window.location.href = 'login.html';
             return;
         }
@@ -51,7 +51,7 @@ const TourIn = {
         // Verifica duplicatas
         const exists = currentItinerary.find(item => item.id === id);
         if (exists) {
-            alert(`"${title}" já está no seu roteiro atual!`);
+            showToast(`"${title}" já está no seu roteiro atual!`, true);
             return;
         }
     
@@ -59,12 +59,9 @@ const TourIn = {
         currentItinerary.push({ id, title, type });
         localStorage.setItem('temp_itinerary', JSON.stringify(currentItinerary));
     
-        // Feedback visual
-        const confirmGo = window.confirm(`"${title}" adicionado! Você tem ${currentItinerary.length} itens no rascunho.\n\nDeseja ir para a página de Roteiros para finalizar?`);
-        
-        if (confirmGo) {
-            window.location.href = 'itinerary.html';
-        }
+                // Feedback visual com toast
+        showToast(`"${title}" adicionado! (${currentItinerary.length} item(s) no rascunho)`);
+        setTimeout(() => { window.location.href = 'itinerary.html'; }, 1800);
     }
 };
 
@@ -162,3 +159,28 @@ const revealElements = () => {
 };
 
 // Podes chamar esta função sempre que as funções de listagem (ex: loadEvents) terminarem.
+
+// ═══════════════════════════════════════════════════════════
+// TOAST GLOBAL — substitui alert() em todo o frontend
+// ═══════════════════════════════════════════════════════════
+window.showToast = function(msg, isError = false) {
+    let t = document.getElementById('_global_toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = '_global_toast';
+        t.style.cssText = [
+            'position:fixed', 'bottom:24px', 'right:24px', 'z-index:9999',
+            'padding:12px 20px', 'border-radius:8px', 'font-size:0.95rem',
+            'font-weight:600', 'box-shadow:0 4px 16px rgba(0,0,0,0.25)',
+            'display:none', 'max-width:320px', 'word-break:break-word',
+            'transition:opacity 0.3s'
+        ].join(';');
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.background = isError ? '#ff4d4d' : '#00f264';
+    t.style.color = isError ? '#fff' : '#000';
+    t.style.display = 'block';
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => { t.style.display = 'none'; }, 3500);
+};

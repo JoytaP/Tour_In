@@ -30,6 +30,11 @@ exports.register = asyncHandler(async (req, res) => {
     const existing = await db.getAsync(`SELECT id FROM users WHERE email = ?`, [email]);
     if (existing) throw new AppError('E-mail já cadastrado.', 400);
 
+    if (cnpj) {
+        const existingCnpj = await db.getAsync(`SELECT id FROM users WHERE cnpj = ?`, [cnpj]);
+        if (existingCnpj) throw new AppError('CNPJ já cadastrado.', 400);
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const coords = await getCoordinates(address);
 

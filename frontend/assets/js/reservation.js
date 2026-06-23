@@ -6,7 +6,7 @@ const RESERVATION_API = (typeof API_URL !== 'undefined' ? API_URL : 'http://loca
 function openReservationModal(entityId, entityType, entityName) {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
-        alert('Faça login para fazer uma reserva!');
+        showToast('Faça login para fazer uma reserva!', true);
         window.location.href = 'login.html';
         return;
     }
@@ -86,7 +86,7 @@ async function submitReservation(entityType, entityId) {
 
     if (!date) {
         document.getElementById('res-date').focus();
-        alert('Selecione a data e hora da visita.');
+        showToast('Selecione a data e hora da visita.', true);
         return;
     }
 
@@ -119,11 +119,11 @@ async function submitReservation(entityType, entityId) {
             // Recarrega reservas na dashboard se existir
             if (typeof loadReservationsOnDashboard === 'function') loadReservationsOnDashboard();
         } else {
-            alert(data.error || 'Erro ao fazer reserva.');
+            showToast(data.error || 'Erro ao fazer reserva.', true);
         }
     } catch (err) {
         console.error(err);
-        alert('Erro de conexão.');
+        showToast('Erro de conexão.', true);
     }
 }
 

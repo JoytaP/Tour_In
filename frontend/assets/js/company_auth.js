@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setFeedback('✅ Empresa cadastrada! Redirecionando para o dashboard...');
 
             // Pequena pausa para o usuário ver a mensagem
-            setTimeout(() => window.location.href = 'company_dasboard.html', 1200);
+            setTimeout(() => window.location.href = 'company_dashboard.html', 1200);
 
         } catch (err) {
             console.error('Erro no cadastro:', err);

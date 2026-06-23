@@ -17,12 +17,14 @@ CREATE TABLE IF NOT EXISTS users (
     preferences TEXT,               -- JSON array ex: ["gastronomy","nature"]
 
     -- Campos de empresa
-    cnpj TEXT,
+    cnpj TEXT UNIQUE,               -- unicidade de CNPJ garantida no banco
     category TEXT,
     address TEXT,
     website TEXT,
     description TEXT,
     photos TEXT,                    -- JSON array de paths
+    operating_hours TEXT,           -- JSON objeto com horários por dia
+    profile_views INTEGER DEFAULT 0,-- contador de visualizações do perfil
     lat REAL,
     lon REAL,
 

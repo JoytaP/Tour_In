@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const newPassword         = document.getElementById('new-password').value;
             const confirmNewPassword  = document.getElementById('confirm-new-password').value;
 
-            if (newPassword !== confirmNewPassword) { alert('As senhas não coincidem.'); return; }
-            if (newPassword.length < 6) { alert('A senha deve ter ao menos 6 caracteres.'); return; }
+            if (newPassword !== confirmNewPassword) { showToast('As senhas não coincidem.', true); return; }
+            if (newPassword.length < 6) { showToast('A senha deve ter ao menos 6 caracteres.', true); return; }
 
             const btn = passwordForm.querySelector('button');
             btn.textContent = 'Atualizando...'; btn.disabled = true;
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    alert('Senha alterada! Faça login novamente.');
+                    showToast('Senha alterada! Faça login novamente.');
                     TourIn.logout();
                 } else {
-                    alert(data.message || 'Erro ao alterar senha.');
+                    showToast(data.message || 'Erro ao alterar senha.', true);
                 }
             } catch (err) {
-                alert('Erro de conexão.');
+                showToast('Erro de conexão.', true);
             } finally {
                 btn.textContent = 'Atualizar Senha'; btn.disabled = false;
             }
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 '⚠️ Esta ação é irreversível.\n\nDigite sua senha para confirmar a exclusão da sua conta:'
             );
             if (password === null) return; // Cancelou
-            if (!password.trim()) { alert('A senha é obrigatória.'); return; }
+            if (!password.trim()) { showToast('A senha é obrigatória.', true); return; }
 
             confirmDelete(password);
         });
@@ -98,13 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (res.ok) {
-                alert('Conta excluída com sucesso. Até logo!');
+                showToast('Conta excluída com sucesso. Até logo!');
                 TourIn.logout();
             } else {
-                alert(data.message || 'Não foi possível excluir a conta.');
+                showToast(data.message || 'Não foi possível excluir a conta.', true);
             }
         } catch (err) {
-            alert('Erro de conexão.');
+            showToast('Erro de conexão.', true);
         }
     }
 

@@ -43,14 +43,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.ok) {
-                alert('Roteiro salvo com sucesso!');
+                showToast('Roteiro salvo com sucesso!');
                 localStorage.removeItem('temp_itinerary');
                 location.reload();
             } else {
-                alert('Erro ao salvar.');
+                showToast('Erro ao salvar.', true);
             }
         } catch (error) {
-            alert('Erro de conexão.');
+            showToast('Erro de conexão.', true);
         }
     }
 
@@ -141,14 +141,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             // if (response.status === 404) { alert('Backend não suporta exclusão ainda.'); return; }
 
             if (response.ok) {
-                alert('Roteiro excluído.');
+                showToast('Roteiro excluído.');
                 loadItineraries(); // Recarrega lista
             } else {
-                alert('Erro ao excluir roteiro. Verifique o backend.');
+                showToast('Erro ao excluir roteiro.', true);
             }
         } catch (error) {
             console.error(error);
-            alert('Erro de conexão ao tentar excluir.');
+            showToast('Erro de conexão ao tentar excluir.', true);
         }
     };
 

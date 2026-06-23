@@ -450,7 +450,7 @@ out body 60;`;
     window.openReviewModal = async (targetId, type, name) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Faça login para avaliar este local.');
+            showToast('Faça login para avaliar este local.', true);
             window.location.href = 'login.html';
             return;
         }
@@ -533,7 +533,7 @@ out body 60;`;
 
     window.submitReview = async (targetId, type) => {
         const token = localStorage.getItem('token');
-        if (!selectedRating) { alert('Selecione uma nota de 1 a 5 estrelas.'); return; }
+        if (!selectedRating) { showToast('Selecione uma nota de 1 a 5 estrelas.', true); return; }
         const comment = document.getElementById('review-comment')?.value;
 
         const endpoint = type === 'place'
@@ -557,11 +557,11 @@ out body 60;`;
                 // Recarrega os marcadores para atualizar notas
                 await loadAndRender(document.getElementById('search-input')?.value || '');
             } else {
-                alert(data.message || 'Erro ao enviar avaliação.');
+                showToast(data.message || 'Erro ao enviar avaliação.', true);
                 btn.textContent = 'Enviar Avaliação'; btn.disabled = false;
             }
         } catch(e) {
-            alert('Erro de conexão.');
+            showToast('Erro de conexão.', true);
             btn.textContent = 'Enviar Avaliação'; btn.disabled = false;
         }
     };
@@ -630,7 +630,7 @@ out body 60;`;
 window.saveOSMToWishlist = async (name, type, address, lat, lon) => {
     const token = localStorage.getItem('token');
     if (!token) {
-        alert('Faça login para salvar na wishlist!');
+        showToast('Faça login para salvar na wishlist!', true);
         window.location.href = 'pages/login.html';
         return;
     }

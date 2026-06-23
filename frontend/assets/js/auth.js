@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordInput ? passwordInput.value : null;
 
             if (!email || !password) {
-                alert('Por favor, preencha todos os campos.');
+                showToast('Por favor, preencha todos os campos.', true);
                 return;
             }
 
@@ -43,16 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Redireciona conforme o tipo de conta
                     if (data.user.role === 'company') {
-                        window.location.href = 'company_dasboard.html';
+                        window.location.href = 'company_dashboard.html';
                     } else {
                         window.location.href = 'dashboard.html';
                     }
                 } else {
-                    alert(data.message || 'Erro ao fazer login. Verifique seus dados.');
+                    showToast(data.message || 'Erro ao fazer login. Verifique seus dados.', true);
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro de conexão com o servidor.');
+                showToast('Erro de conexão com o servidor.', true);
             } finally {
                 btn.innerText = 'Entrar';
                 btn.disabled = false;
@@ -73,12 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validação Manual
             if (!name || !email || !password) {
-                alert('Preencha todos os campos!');
+                showToast('Preencha todos os campos!', true);
                 return;
             }
 
             if (password !== confirmPassword) {
-                alert('As senhas não conferem!');
+                showToast('As senhas não conferem!', true);
                 return;
             }
 
@@ -96,15 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     // SUCESSO!
-                    alert('Conta criada! Redirecionando para o Login...');
+                    showToast('Conta criada! Redirecionando para o login...');
                     // Força a mudança de página
                     window.location.replace('login.html');
                 } else {
-                    alert('Erro: ' + (data.message || 'Falha ao criar conta'));
+                    showToast(data.message || 'Falha ao criar conta', true);
                 }
             } catch (error) {
                 console.error(error);
-                alert('Erro de conexão.');
+                showToast('Erro de conexão.', true);
             } finally {
                 btnRegister.innerText = 'Criar Conta';
                 btnRegister.disabled = false;
@@ -141,16 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     if (response.ok) {
-                        alert('Empresa cadastrada com sucesso!');
+                        showToast('Empresa cadastrada com sucesso!');
                         window.location.href = 'dashboard.html';
                     } else {
                         const data = await response.json();
-                        alert(data.message || 'Erro ao cadastrar empresa');
+                        showToast(data.message || 'Erro ao cadastrar empresa', true);
                     }
 
                 } catch (error) {
                     console.error(error);
-                    alert('Erro de conexão.');
+                    showToast('Erro de conexão.', true);
                 }
             });
         }

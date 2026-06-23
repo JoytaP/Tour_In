@@ -23,14 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('company', JSON.stringify(data.user));
 
-                window.location.href = 'company_dasboard.html';
+                window.location.href = 'company_dashboard.html';
             } else {
-                alert(data.message || 'Erro no login');
+                showToast(data.message || 'Erro no login', true);
             }
 
         } catch (error) {
             console.error(error);
-            alert('Erro ao conectar com o servidor');
+            showToast('Erro ao conectar com o servidor', true);
         }
     });
 

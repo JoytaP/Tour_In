@@ -203,6 +203,13 @@ header {
     font-weight: 800;
 }
 
+.logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: inline-block;
+}
+
 /* --- CARDS E GRIDS --- */
 .event-card, .place-card, .itinerary-card {
     background: var(--bg-card);
