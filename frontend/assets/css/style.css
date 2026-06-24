@@ -28,21 +28,14 @@
 ========================= */
 body.light-mode {
     --bg-dark: #f5f7fb;
-
     --bg-card: rgba(255, 255, 255, 0.8);
-
     --accent-primary: #2563eb;
     --accent-secondary: #1d4ed8;
-
     --text-main: #111827;
     --text-muted: #4b5563;
-
-    --glass-border: rgba(0, 0, 0, 0.08);
-
-    --header-bg: rgba(255, 255, 255, 0.7);
-
+    --glass-border: rgba(0, 0, 0, 0.12);   /* ← levemente mais visível */
+    --header-bg: rgba(255, 255, 255, 0.45); /* ← era 0.7, agora 0.45 */
     --input-bg: rgba(0, 0, 0, 0.03);
-
     --shadow-color: rgba(0, 0, 0, 0.08);
 }
 
@@ -290,11 +283,10 @@ input:focus {
 
 .feature-card {
     /* Efeito de Vidro */
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: var(--bg-card) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border) !important;
-    
+    border: 1px solid var(--glass-border) !important;  
     border-radius: 32px;
     padding: 40px 30px;
     text-align: left;
@@ -338,6 +330,17 @@ input:focus {
     font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
+}
+body.light-mode .feature-card h3 {
+    color: #111827;
+}
+
+body.light-mode .feature-card p {
+    color: #374151;
+}
+
+body.light-mode .features-section h2 {
+    color: #111827;
 }
 /* =========================
    BOTÃO DE TEMA
@@ -405,4 +408,16 @@ button {
     transform: scale(1.05);
 
     box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+}
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4,
+body.light-mode p {
+    color: #111827;
+}
+
+body.light-mode .text-muted,
+body.light-mode small {
+    color: #4b5563;
 }
