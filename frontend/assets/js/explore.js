@@ -340,7 +340,7 @@ out body 60;`;
             ${imgHtml}
             <div style="display:flex;justify-content:space-between;align-items:flex-start;">
                 <div style="flex:1;">
-                    <div style="font-weight:700;font-size:.95rem;color:var(--text-main);margin-bottom:4px;">
+                    <div style="font-weight:700;font-size:.95rem;color:#fff;margin-bottom:4px;">
                         ${catLabel} ${escapeHtml(place.name)}
                     </div>
                     <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:6px;">${escapeHtml(place.address || '')}</div>
@@ -352,7 +352,7 @@ out body 60;`;
             </div>
             <div style="display:flex;gap:8px;margin-top:10px;">
                 <button onclick="focusOnMap(${place.lat},${place.lon},'${escapeHtml(place.name)}')"
-                    style="flex:1;padding:7px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-main);font-size:.75rem;cursor:pointer;">
+                    style="flex:1;padding:7px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:10px;color:#fff;font-size:.75rem;cursor:pointer;">
                     📍 Ver no mapa
                 </button>
                 <button onclick="openReviewModal(${place.id},'place','${escapeHtml(place.name)}')"
@@ -428,10 +428,10 @@ out body 60;`;
             padding:12px;cursor:pointer;border-radius:14px;margin-bottom:8px;
             background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);transition:0.2s;`;
         card.innerHTML = `
-            <div style="font-weight:600;font-size:.9rem;color:var(--text-main);margin-bottom:2px;">
+            <div style="font-weight:600;font-size:.9rem;color:#fff;margin-bottom:2px;">📍 ${escapeHtml(name)}</div>
             <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:8px;">${escapeHtml(info)}</div>
             <button onclick="focusOnMap(${place.lat},${place.lon},'${escapeHtml(name)}')"
-                style="padding:5px 12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:8px;color:var(--text-main);font-size:.72rem;cursor:pointer;">
+                style="padding:5px 12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:8px;color:#fff;font-size:.72rem;cursor:pointer;">
                 📍 Ver no mapa
             </button>`;
 
@@ -491,7 +491,7 @@ out body 60;`;
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                     <h3 style="font-weight:800;margin:0;">${escapeHtml(name)}</h3>
                     <button onclick="document.getElementById('review-modal').remove()"
-                        style="background:none;border:none;color:var(--text-main);font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
+                        style="background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
                 </div>
 
                 <h4 style="font-size:.8rem;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;font-weight:800;">Avaliações (${reviews.length})</h4>
@@ -509,7 +509,7 @@ out body 60;`;
                     </div>
                     <textarea id="review-comment" placeholder="Conte sua experiência... (opcional)"
                         style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);
-                              border-radius:14px;color:var(--text-main);font-family:inherit;
+                               border-radius:14px;color:#fff;font-family:inherit;font-size:.9rem;resize:vertical;min-height:80px;box-sizing:border-box;"></textarea>
                     <button id="submit-review-btn" onclick="submitReview(${targetId},'${type}')"
                         style="width:100%;margin-top:12px;padding:14px;background:var(--accent-primary);border:none;border-radius:14px;
                                color:#000;font-weight:800;font-size:.95rem;cursor:pointer;">
@@ -664,25 +664,26 @@ window.saveOSMToWishlist = async (name, type, address, lat, lon) => {
 
         let placeId = null;
         if (placeRes.ok) {
+            // Resposta do POST /api/places: { success, message, data: { id, ... } }
             const pd = await placeRes.json();
-            placeId = pd.place?.id || pd.id;
-        } else if (placeRes.status === 409) {
-            // Lugar já existe — tenta buscar pelo nome
-            const search = await fetch(`${BASE}/places?q=${encodeURIComponent(name)}`, { headers });
+            placeId = pd.data?.id ?? pd.place?.id ?? pd.id ?? null;
+        } else {
+            // Cadastro falhou — tenta encontrar pelo nome + coordenadas
+            const search = await fetch(
+                `${BASE}/places?lat=${lat}&lon=${lon}&q=${encodeURIComponent(name)}`,
+                { headers }
+            );
             if (search.ok) {
                 const places = await search.json();
-                const found = Array.isArray(places) ? places.find(p => p.name === name) : null;
+                const found = Array.isArray(places)
+                    ? places.find(p => p.name === name)
+                    : null;
                 if (found) placeId = found.id;
             }
         }
 
         if (!placeId) {
-            // Não conseguiu registrar — avisa mas não bloqueia
-            const _t = document.createElement('div');
-            _t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#f2c94c;color:#000;padding:12px 24px;border-radius:100px;font-weight:700;z-index:99999;';
-            _t.textContent = '⚠️ Não foi possível registrar o local.';
-            document.body.appendChild(_t);
-            setTimeout(() => _t.remove(), 3000);
+            showToast('Nao foi possivel registrar o local.', true);
             return;
         }
 

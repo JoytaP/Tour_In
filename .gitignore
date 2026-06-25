@@ -1,16 +1,16 @@
 # Dependências
 node_modules/
 
-# Variáveis de ambiente (contém chaves secretas)
-.env
+# Variáveis de ambiente (segredos)
 backend/.env
 
-# Uploads gerados
+# Banco de dados local
+database/*.db
+database/*.sqlite
+
+# Uploads de usuários (não versionar conteúdo dinâmico)
 backend/uploads/*
 !backend/uploads/.gitkeep
-
-# Banco de dados local
-database/tourin.db
 
 # Logs
 *.log

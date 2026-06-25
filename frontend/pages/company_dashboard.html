@@ -86,14 +86,14 @@
       border: none; border-radius: 10px;
       padding: 7px 11px; cursor: pointer; transition: .2s; font-size: .85rem;
     }
-    .edit-btn:hover { background: var(--accent-primary); color: #fff; }
+    .edit-btn:hover { background: var(--accent-primary); color: var(--text-main); }
     .delete-btn {
       background: rgba(255,77,77,.12);
       color: #ff4d4d;
       border: none; border-radius: 10px;
       padding: 7px 11px; cursor: pointer; transition: .2s; font-size: .85rem;
     }
-    .delete-btn:hover { background: #ff4d4d; color: #fff; }
+    .delete-btn:hover { background: #ff4d4d; color: var(--text-main); }
 
     .action-btn {
       width: 100%; padding: 16px;
@@ -104,7 +104,7 @@
       cursor: pointer; font-weight: 700; font-size: .9rem;
       transition: .2s; text-align: left;
     }
-    .action-btn:hover { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+    .action-btn:hover { background: var(--accent-primary); color: var(--text-main); border-color: var(--accent-primary); }
 
     /* Reviews */
     .review-card {
@@ -135,7 +135,7 @@
     .photo-remove {
       position: absolute; top: -6px; right: -6px;
       width: 20px; height: 20px; border-radius: 50%;
-      background: #ff4d4d; color: #fff; border: none;
+      background: #ff4d4d; color: var(--text-main); border: none;
       cursor: pointer; font-size: 12px; line-height: 20px; text-align: center;
       display: none;
     }
@@ -255,7 +255,7 @@
     <div class="glass-card events-management">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;">
         <h3>Meus Eventos</h3>
-        <button id="new-event-btn" class="btn btn-primary" style="color:#fff;">+ Novo Evento</button>
+        <button id="new-event-btn" class="btn btn-primary" style="color: var(--text-main);">+ Novo Evento</button>
       </div>
       <div id="events-list">
         <div class="empty-state"><span>📅</span>Carregando...</div>
@@ -312,14 +312,14 @@
           <input type="text" id="h-dom" placeholder="Fechado">
         </div>
       </div>
-      <button class="btn btn-primary save-hours-btn" id="save-hours-btn" style="color:#fff;">💾 Salvar Horários</button>
+      <button class="btn btn-primary save-hours-btn" id="save-hours-btn" style="color: var(--text-main);">💾 Salvar Horários</button>
     </div>
 
     <!-- GALERIA -->
     <div class="glass-card photos-section">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <h3>📸 Fotos da Empresa</h3>
-        <button class="btn btn-primary" id="add-photos-btn" style="color:#fff;">+ Adicionar</button>
+        <button class="btn btn-primary" id="add-photos-btn" style="color: var(--text-main);">+ Adicionar</button>
       </div>
       <div class="photo-gallery" id="photo-gallery">
         <p style="color:var(--text-muted);">Nenhuma foto ainda.</p>
@@ -373,7 +373,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('event-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color:#fff;">✨ Criar Evento</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">✨ Criar Evento</button>
       </div>
     </form>
   </div>
@@ -423,7 +423,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('edit-event-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color:#fff;">💾 Salvar</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">💾 Salvar</button>
       </div>
     </form>
   </div>
@@ -473,7 +473,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('edit-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color:#fff;">💾 Salvar Perfil</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">💾 Salvar Perfil</button>
       </div>
     </form>
   </div>
