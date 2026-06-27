@@ -117,6 +117,31 @@
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+
+    /* Checklist força de senha - empresa */
+    .pwd-rules {
+        list-style: none;
+        padding: 10px 14px;
+        margin: 8px 0 0;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        font-size: 0.78rem;
+        display: none;
+        grid-column: 1 / -1;
+    }
+    .pwd-rules.visible { display: block; }
+    .pwd-rules li {
+        display: flex; align-items: center; gap: 8px;
+        padding: 3px 0; color: var(--text-muted); transition: color 0.2s;
+    }
+    .pwd-rules li.ok { color: #00e676; }
+    .pwd-rules li .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: rgba(255,255,255,0.2); flex-shrink: 0; transition: background 0.2s;
+    }
+    .pwd-rules li.ok .dot { background: #00e676; }
+    
     @media (max-width: 900px) {
         .business-grid { grid-template-columns: 1fr; }
         .feature-card-glass { position: static; }
@@ -234,12 +259,19 @@
           <div class="form-row" style="margin-top: 15px;">
             <div class="form-group">
               <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Criar Senha</label>
-              <input type="password" class="input-biz" id="comp-password" placeholder="••••••••" required>
+              <input type="password" class="input-biz" id="comp-password" placeholder="••••••••" required autocomplete="new-password">
             </div>
             <div class="form-group">
               <label class="label" style="font-size: 0.75rem; color: var(--text-muted);">Confirmar Senha</label>
-              <input type="password" class="input-biz" id="comp-confirm-password" placeholder="••••••••" required>
+              <input type="password" class="input-biz" id="comp-confirm-password" placeholder="••••••••" required autocomplete="new-password">
             </div>
+            <ul class="pwd-rules" id="pwd-rules-company">
+              <li id="cr-len"><span class="dot"></span>Mínimo de 8 caracteres</li>
+              <li id="cr-upper"><span class="dot"></span>Uma letra maiúscula</li>
+              <li id="cr-lower"><span class="dot"></span>Uma letra minúscula</li>
+              <li id="cr-num"><span class="dot"></span>Um número</li>
+              <li id="cr-special"><span class="dot"></span>Um caractere especial (@, #, !, %...)</li>
+            </ul>
           </div>
 
           <div style="margin-top: 30px; display: flex; gap: 12px; align-items: center;">

@@ -8,8 +8,16 @@ const AppError = require('../utils/AppError');
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Senha forte: mín 8 chars, maiúscula, minúscula, número e caractere especial
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!%*?&^$\-_+=<>|]).{8,}$/;
+const PASSWORD_RULES = 'A senha deve ter ao menos 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial (@, #, !, %, ...).';
+
 function isNonEmptyString(v) {
     return typeof v === 'string' && v.trim().length > 0;
+}
+
+function isStrongPassword(v) {
+    return typeof v === 'string' && PASSWORD_REGEX.test(v);
 }
 
 // ── Autenticação de usuário ──────────────────────────────────────────────
@@ -22,8 +30,8 @@ exports.validateRegistration = (req, res, next) => {
     if (!isNonEmptyString(email) || !EMAIL_REGEX.test(email)) {
         return next(new AppError('Informe um e-mail válido.', 400));
     }
-    if (!isNonEmptyString(password) || password.length < 6) {
-        return next(new AppError('A senha deve ter ao menos 6 caracteres.', 400));
+    if (!isStrongPassword(password)) {
+        return next(new AppError(PASSWORD_RULES, 400));
     }
 
     // Normaliza e-mail (evita duplicidade por caixa alta/baixa)
@@ -49,8 +57,8 @@ exports.validateCompanyRegistration = (req, res, next) => {
     if (!isNonEmptyString(email) || !EMAIL_REGEX.test(email)) {
         return next(new AppError('Informe um e-mail válido.', 400));
     }
-    if (!isNonEmptyString(password) || password.length < 6) {
-        return next(new AppError('A senha deve ter ao menos 6 caracteres.', 400));
+    if (!isStrongPassword(password)) {
+        return next(new AppError(PASSWORD_RULES, 400));
     }
     if (!isNonEmptyString(phone)) return next(new AppError('Telefone é obrigatório.', 400));
     if (!isNonEmptyString(address)) return next(new AppError('Endereço é obrigatório.', 400));
@@ -126,8 +134,8 @@ exports.validatePasswordChange = (req, res, next) => {
     if (!isNonEmptyString(currentPassword)) {
         return next(new AppError('Informe a senha atual.', 400));
     }
-    if (!isNonEmptyString(newPassword) || newPassword.length < 6) {
-        return next(new AppError('A nova senha deve ter ao menos 6 caracteres.', 400));
+    if (!isStrongPassword(newPassword)) {
+        return next(new AppError(PASSWORD_RULES, 400));
     }
     next();
 };

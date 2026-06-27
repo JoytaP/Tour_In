@@ -21,8 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const newPassword         = document.getElementById('new-password').value;
             const confirmNewPassword  = document.getElementById('confirm-new-password').value;
 
+            const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!%*?&^$\-_+=<>|]).{8,}$/;
+            if (!PWD_REGEX.test(newPassword)) {
+                showToast('A nova senha deve ter mín. 8 caracteres, maiúscula, minúscula, número e caractere especial.', true);
+                return;
+            }
             if (newPassword !== confirmNewPassword) { showToast('As senhas não coincidem.', true); return; }
-            if (newPassword.length < 6) { showToast('A senha deve ter ao menos 6 caracteres.', true); return; }
 
             const btn = passwordForm.querySelector('button');
             btn.textContent = 'Atualizando...'; btn.disabled = true;

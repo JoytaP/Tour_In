@@ -60,44 +60,71 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DE REGISTRO (CORREÇÃO BLINDADA) ---
+    // ── Validação de força de senha (regex igual ao backend) ────────────────
+    const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!%*?&^$\-_+=<>|]).{8,}$/;
+
+    function checkPasswordRules(pwd, prefix) {
+        const rules = {
+            [`${prefix}-len`]:     pwd.length >= 8,
+            [`${prefix}-upper`]:   /[A-Z]/.test(pwd),
+            [`${prefix}-lower`]:   /[a-z]/.test(pwd),
+            [`${prefix}-num`]:     /\d/.test(pwd),
+            [`${prefix}-special`]: /[@#!%*?&^$\-_+=<>|]/.test(pwd),
+        };
+        Object.entries(rules).forEach(([id, ok]) => {
+            const li = document.getElementById(id);
+            if (li) li.classList.toggle('ok', ok);
+        });
+        return Object.values(rules).every(Boolean);
+    }
+    window._checkPasswordRules = checkPasswordRules;
+    window._PWD_REGEX = PWD_REGEX;
+
+    // Ativa checklist ao digitar na senha do usuário
+    const pwdInput = document.getElementById('reg-password');
+    const pwdRules = document.getElementById('pwd-rules-user');
+    if (pwdInput && pwdRules) {
+        pwdInput.addEventListener('focus', () => pwdRules.classList.add('visible'));
+        pwdInput.addEventListener('input', () => checkPasswordRules(pwdInput.value, 'ur'));
+    }
+
+    // --- LÓGICA DE REGISTRO (USUÁRIO) ---
     const btnRegister = document.getElementById('btn-register');
     if (btnRegister) {
         btnRegister.addEventListener('click', async () => {
-            
-            // Pega os valores
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
+            const name     = document.getElementById('reg-name').value.trim();
+            const email    = document.getElementById('reg-email').value.trim();
             const password = document.getElementById('reg-password').value;
-            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const confirm  = document.getElementById('reg-confirm-password').value;
 
-            // Validação Manual
             if (!name || !email || !password) {
                 showToast('Preencha todos os campos!', true);
                 return;
             }
-
-            if (password !== confirmPassword) {
+            if (!PWD_REGEX.test(password)) {
+                if (pwdRules) pwdRules.classList.add('visible');
+                checkPasswordRules(password, 'ur');
+                showToast('A senha não atende aos requisitos de segurança.', true);
+                return;
+            }
+            if (password !== confirm) {
                 showToast('As senhas não conferem!', true);
                 return;
             }
 
             try {
                 btnRegister.innerText = 'Criando conta...';
-                btnRegister.disabled = true;
+                btnRegister.disabled  = true;
 
                 const response = await fetch(`${API_URL}/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password, role: 'user' })
                 });
-
                 const data = await response.json();
 
                 if (response.ok) {
-                    // SUCESSO!
                     showToast('Conta criada! Redirecionando para o login...');
-                    // Força a mudança de página
                     window.location.replace('login.html');
                 } else {
                     showToast(data.message || 'Falha ao criar conta', true);
@@ -107,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('Erro de conexão.', true);
             } finally {
                 btnRegister.innerText = 'Criar Conta';
-                btnRegister.disabled = false;
+                btnRegister.disabled  = false;
             }
         });
     }

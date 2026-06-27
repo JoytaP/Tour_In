@@ -31,6 +31,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.style.display = 'none';
     }
 
+    // ── Força de senha (mesma regex do backend) ──────────────────────────────
+    const PWD_REGEX   = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#!%*?&^$\-_+=<>|]).{8,}$/;
+    const compPwdInput = document.getElementById('comp-password');
+    const compPwdRules = document.getElementById('pwd-rules-company');
+
+    function checkCompPwdRules(pwd) {
+        const rules = {
+            'cr-len':     pwd.length >= 8,
+            'cr-upper':   /[A-Z]/.test(pwd),
+            'cr-lower':   /[a-z]/.test(pwd),
+            'cr-num':     /\d/.test(pwd),
+            'cr-special': /[@#!%*?&^$\-_+=<>|]/.test(pwd),
+        };
+        Object.entries(rules).forEach(([id, ok]) => {
+            const li = document.getElementById(id);
+            if (li) li.classList.toggle('ok', ok);
+        });
+        return Object.values(rules).every(Boolean);
+    }
+
+    if (compPwdInput && compPwdRules) {
+        compPwdInput.addEventListener('focus', () => compPwdRules.classList.add('visible'));
+        compPwdInput.addEventListener('input', () => checkCompPwdRules(compPwdInput.value));
+    }
+
     // ── Submit ────────────────────────────────────────────────────────────────
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -39,12 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const password        = getValue('comp-password');
         const confirmPassword = getValue('comp-confirm-password');
 
-        if (password !== confirmPassword) {
-            setFeedback('❌ As senhas não coincidem.', true);
+        if (!PWD_REGEX.test(password)) {
+            if (compPwdRules) compPwdRules.classList.add('visible');
+            checkCompPwdRules(password);
+            setFeedback('❌ A senha não atende aos requisitos de segurança. Veja os critérios abaixo.', true);
             return;
         }
-        if (password.length < 6) {
-            setFeedback('❌ A senha deve ter pelo menos 6 caracteres.', true);
+        if (password !== confirmPassword) {
+            setFeedback('❌ As senhas não coincidem.', true);
             return;
         }
 
