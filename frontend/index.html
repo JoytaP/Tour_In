@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Tour.In - Descubra Experiências Únicas</title>
@@ -156,6 +162,31 @@
         .nav-links a { font-size: 0.7rem; }
     }
   </style>
+
+<style>
+/* Light mode patches - index.html */
+body.light-mode .feature-card {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .feature-icon { filter: none !important; }
+body.light-mode .hero-section h1 { color: #111827; }
+body.light-mode [style*="background: rgba(255,255,255,0.05)"],
+body.light-mode [style*="background:rgba(255,255,255,0.05)"] {
+    background: rgba(0,0,0,0.05) !important;
+}
+body.light-mode footer,
+body.light-mode [style*="border-top: 1px solid var(--glass-border)"] {
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode [style*="color: #444"] { color: #6b7280 !important; }
+body.light-mode .logo-mark { color: #ffffff !important; }
+body.light-mode .btn-primary { color: #ffffff !important; }
+body.light-mode [style*="background: rgba(255,255,255,0.05); color: var(--text-main)"] {
+    background: rgba(0,0,0,0.05) !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -195,10 +226,10 @@
           roteiros personalizados com a curadoria que você merece.
         </p>
         <div class="hero-buttons">
-          <a class="btn btn-primary" href="pages/explore.html" style="color: #000;">
+          <a class="btn btn-primary" href="pages/explore.html">
             Começar a Explorar
           </a>
-          <a class="btn" href="pages/register.html" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--glass-border);">
+          <a class="btn" href="pages/register.html" style="background: var(--btn-ghost-bg); color: var(--btn-ghost-color); border: 1px solid var(--glass-border);">
             Criar minha conta
           </a>
         </div>
@@ -233,13 +264,13 @@
 
     <footer class="footer">
       <div class="brand">
-        <div class="logo-mark" style="width: 35px; height: 35px; background: var(--accent-primary); border-radius: 10px; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
+        <div class="logo-mark" style="width: 35px; height: 35px; background: var(--accent-primary); border-radius: 10px; color: var(--logo-mark-color); display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
         Tour.In
       </div>
       <p class="footer-description">
         Sua próxima experiência inesquecível começa aqui.
       </p>
-      <p style="color: #444; font-size: 0.75rem;">
+      <p style="color: var(--text-muted); font-size: 0.75rem;">
         © 2026 Tour.In — Projeto Acadêmico Modernizado.
       </p>
     </footer>

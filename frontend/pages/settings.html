@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Configurações — Tour.In</title>
@@ -74,7 +80,7 @@
 
     .sn-item:hover {
         background: rgba(255, 255, 255, 0.05);
-        color: #fff;
+        color: var(--text-main);
     }
 
     .sn-item.active {
@@ -124,7 +130,7 @@
     .card-title h3 {
         font-size: 1.2rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--text-main);
     }
 
     /* Estilo Danger Zone */
@@ -200,6 +206,15 @@
         .settings-sidebar { position: static; margin-bottom: 20px; }
     }
   </style>
+
+<style>
+/* Light mode — settings.html */
+body.light-mode .sn-item { color: #4b5563 !important; }
+body.light-mode .card-title h3 { color: #111827 !important; }
+body.light-mode .danger-zone-desc { color: #374151 !important; }
+body.light-mode .logo-mark { color: #ffffff !important; }
+</style>
+
 </head>
 <body>
   <div id="vlibras-widget" class="enabled">
@@ -273,14 +288,14 @@
           <form id="notifications-form">
             <div class="toggle-wrap">
               <div>
-                <div style="color: #fff; font-weight: 600;">Novidades e Promoções</div>
+                <div style="color: var(--text-main); font-weight: 600;">Novidades e Promoções</div>
                 <div style="color: var(--text-muted); font-size: 0.8rem;">Receba dicas de novos lugares.</div>
               </div>
               <label class="toggle"><input type="checkbox" id="notif-marketing" checked><span class="toggle-track"></span></label>
             </div>
             <div class="toggle-wrap">
               <div>
-                <div style="color: #fff; font-weight: 600;">Eventos na Cidade</div>
+                <div style="color: var(--text-main); font-weight: 600;">Eventos na Cidade</div>
                 <div style="color: var(--text-muted); font-size: 0.8rem;">Avisos sobre shows e feiras locais.</div>
               </div>
               <label class="toggle"><input type="checkbox" id="notif-events"><span class="toggle-track"></span></label>

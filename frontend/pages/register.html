@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Criar Conta — Tour.In</title>
@@ -185,6 +191,29 @@
     .pwd-rules li.ok .dot { background: #00e676; }
   
   </style>
+
+<style>
+/* Light mode patches - register.html */
+body.light-mode .auth-container {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .login-header h1 { color: #111827 !important; }
+body.light-mode .logo-text { color: #111827; }
+body.light-mode .label-subtle { color: #6b7280 !important; }
+body.light-mode .input-auth {
+    background: #f9fafb !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #111827 !important;
+}
+body.light-mode #msg { color: #dc2626; }
+body.light-mode .terms-text,
+body.light-mode .terms-text a { color: #9ca3af !important; }
+body.light-mode .divider-text { color: #6b7280; }
+body.light-mode .footer-links { color: #6b7280; }
+body.light-mode .btn-primary { color: #ffffff !important; }
+</style>
+
 </head>
 <body>
   <button id="theme-toggle" class="theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema"
@@ -205,7 +234,7 @@
         <div class="logo-mark">T</div>
         <span class="logo-text">Tour.In</span>
       </a>
-      <h1 style="font-size: 1.5rem; color: #fff; margin-bottom: 5px;">Crie sua conta</h1>
+      <h1 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 5px;">Crie sua conta</h1>
       <p style="color: var(--text-muted); font-size: 0.9rem;">Junte-se à maior rede de exploração urbana.</p>
     </div>
 

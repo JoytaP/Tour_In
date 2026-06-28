@@ -21,8 +21,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     function toast(msg, isError = false) {
         const t = $('_toast');
         t.textContent = msg;
-        t.style.background = isError ? '#ff4d4d' : '#00f264';
-        t.style.color = isError ? '#fff' : '#000';
+        const isLight = document.body.classList.contains('light-mode');
+        t.style.background = isError ? '#dc2626' : (isLight ? '#16a34a' : '#00f264');
+        t.style.color = isError ? '#fff' : (isLight ? '#fff' : '#000');
         t.style.display = 'block';
         clearTimeout(t._tid);
         t._tid = setTimeout(() => { t.style.display = 'none'; }, 3000);

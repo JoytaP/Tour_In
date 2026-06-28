@@ -21,15 +21,29 @@
     --shadow-color: rgba(0, 0, 0, 0.4);
 
     --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* ── Variáveis extras para componentes específicos ── */
+    --card-bg-dark:        rgba(255,255,255,0.03);
+    --card-bg-glass:       rgba(255,255,255,0.05);
+    --input-focus-bg:      rgba(255,255,255,0.10);
+    --overlay-dark:        rgba(0,0,0,0.75);
+    --neon-glow:           rgba(0,242,255,0.1);
+    --border-subtle:       rgba(255,255,255,0.05);
+    --btn-ghost-bg:        rgba(255,255,255,0.05);
+    --btn-ghost-color:     #ffffff;
+    --stat-gradient-from:  #ffffff;
+    --logo-mark-color:     #000000;
+    --icon-bg-box:         transparent;
+    --filter-active-text:  #000000;
+    --map-filter:          invert(100%) hue-rotate(180deg) brightness(0.95) contrast(0.85);
 }
 
 /* =========================
    TEMA CLARO
 ========================= */
 body.light-mode {
-    --bg-dark: #f5f7fb;
-
-    --bg-card: rgba(255, 255, 255, 0.8);
+    --bg-dark: #f0f4f8;
+    --bg-card: rgba(255, 255, 255, 0.9);
 
     --accent-primary: #2563eb;
     --accent-secondary: #1d4ed8;
@@ -39,11 +53,40 @@ body.light-mode {
 
     --glass-border: rgba(0, 0, 0, 0.08);
 
-    --header-bg: rgba(255, 255, 255, 0.7);
+    --header-bg: rgba(255, 255, 255, 0.85);
 
     --input-bg: rgba(0, 0, 0, 0.03);
 
     --shadow-color: rgba(0, 0, 0, 0.08);
+
+    --card-bg-dark:        rgba(255,255,255,0.95);
+    --card-bg-glass:       rgba(255,255,255,0.90);
+    --input-focus-bg:      rgba(37,99,235,0.06);
+    --overlay-dark:        rgba(0,0,0,0.50);
+    --neon-glow:           rgba(37,99,235,0.08);
+    --border-subtle:       rgba(0,0,0,0.06);
+    --btn-ghost-bg:        rgba(0,0,0,0.05);
+    --btn-ghost-color:     #111827;
+    --stat-gradient-from:  #111827;
+    --logo-mark-color:     #ffffff;
+    --icon-bg-box:         transparent;
+    --filter-active-text:  #ffffff;
+    --map-filter:          none;
+}
+
+/* Aplica variáveis também no <html> para o IIFE do theme.js funcionar */
+html.light-mode {
+    --bg-dark: #f0f4f8;
+    --bg-card: rgba(255,255,255,0.90);
+    --accent-primary: #2563eb;
+    --accent-secondary: #1d4ed8;
+    --text-main: #111827;
+    --text-muted: #4b5563;
+    --glass-border: rgba(0,0,0,0.08);
+    --header-bg: rgba(255,255,255,0.85);
+    --input-bg: rgba(0,0,0,0.03);
+    --shadow-color: rgba(0,0,0,0.08);
+    --logo-mark-color: #ffffff;
 }
 
 * {
@@ -71,6 +114,9 @@ body::before {
     animation: moveBg 20s infinite linear;
     z-index: -1;
 }
+body.light-mode::before {
+    background: radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 40%);
+}
 
 @keyframes moveBg {
     from { transform: rotate(0deg); }
@@ -85,25 +131,27 @@ header {
     transform: translateX(-50%);
     z-index: 1000;
     
-    /* Força a largura e o formato de pílula */
     width: 90%;
     max-width: 900px;
-    height: 65px; /* Altura fixa para evitar deformação */
+    height: 65px;
     padding: 0 30px;
     border-radius: 100px;
     
-    /* Efeito de Vidro */
     background: var(--header-bg);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
     box-shadow: 0 15px 35px var(--shadow-color);
     
-    /* Alinhamento dos itens LADO A LADO */
-    display: flex !important; /* !important garante que nenhum estilo antigo mude isso */
+    display: flex !important;
     flex-direction: row !important;
     justify-content: space-between;
     align-items: center;
+}
+
+body.light-mode header {
+    border-color: rgba(0,0,0,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
 }
 
 .logo img {
@@ -116,7 +164,7 @@ header {
     display: flex !important;
     flex-direction: row !important;
     align-items: center;
-    gap: 24px; /* Espaçamento entre os links */
+    gap: 24px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -135,52 +183,51 @@ header {
     letter-spacing: 1.2px;
     padding: 8px 4px;
     transition: var(--transition-smooth);
-    white-space: nowrap; /* Evita quebra de linha em nomes longos */
+    white-space: nowrap;
 }
 
-/* Efeito de Hover: Mudança de cor e brilho */
 .nav-links a:hover {
     color: var(--accent-primary);
-    text-shadow: 0 0 12px rgba(0, 242, 255, 0.5);
+    text-shadow: none;
 }
 
-/* Indicador de Página Ativa (Underline Neon) */
+body:not(.light-mode) .nav-links a:hover {
+    text-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
+}
+
+/* Indicador de Página Ativa */
 .nav-links a.active::after,
 .nav-links a:hover::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
+    bottom: -2px; left: 0;
+    width: 100%; height: 2px;
     background: var(--accent-primary);
-    box-shadow: 0 0 10px var(--accent-primary);
     border-radius: 10px;
     transform: scaleX(1);
     transition: transform 0.3s ease;
 }
 
-/* Estado inicial da linha (invisível) */
 .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
+    bottom: -2px; left: 0;
+    width: 100%; height: 2px;
     background: var(--accent-primary);
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
 
-/* Destaque especial para o botão Business ou Sair */
 #logout-btn, a[href*="company_register"] {
     color: var(--accent-secondary) !important;
 }
 
 #logout-btn:hover {
     color: #ff4d4d !important;
-    text-shadow: 0 0 12px rgba(255, 77, 77, 0.5);
+}
+body.light-mode #logout-btn:hover {
+    color: #dc2626 !important;
+    text-shadow: none !important;
 }
 
 @media (min-width: 992px) {
@@ -193,7 +240,6 @@ header {
     color: var(--text-main);
 }
 
-/* Garante que a logo não empurre o menu */
 .brand {
     display: flex;
     align-items: center;
@@ -210,6 +256,11 @@ header {
     display: inline-block;
 }
 
+/* Logo-mark: "T" badge — fundo sempre colorido, texto sempre branco */
+.logo-mark {
+    color: var(--logo-mark-color) !important;
+}
+
 /* --- CARDS E GRIDS --- */
 .event-card, .place-card, .itinerary-card {
     background: var(--bg-card);
@@ -224,7 +275,16 @@ header {
 .event-card:hover, .place-card:hover {
     transform: translateY(-10px);
     border-color: var(--accent-primary);
+}
+
+body:not(.light-mode) .event-card:hover,
+body:not(.light-mode) .place-card:hover {
     box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
+}
+
+body.light-mode .event-card:hover,
+body.light-mode .place-card:hover {
+    box-shadow: 0 20px 40px rgba(37,99,235,0.12);
 }
 
 /* --- BOTÕES --- */
@@ -242,16 +302,25 @@ header {
 
 .btn-primary {
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    color: #000; /* Texto escuro no fundo neon fica mais moderno */
+    color: #ffffff !important;
+}
+
+body:not(.light-mode) .btn-primary {
+    color: #000 !important;
 }
 
 .btn-primary:hover {
-    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.4);
     transform: scale(1.03);
+}
+body:not(.light-mode) .btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.4);
+}
+body.light-mode .btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(37,99,235,0.35);
 }
 
 /* --- INPUTS --- */
-input, select {
+input, select, textarea {
     background: var(--input-bg);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
@@ -260,13 +329,47 @@ input, select {
     transition: var(--transition-smooth);
 }
 
-input:focus {
+input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--accent-primary);
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--input-focus-bg);
 }
 
-/* --- SEÇÃO DE FUNCIONALIDADES (BENTO GLASS) --- */
+input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+}
+
+body.light-mode input,
+body.light-mode select,
+body.light-mode textarea {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #111827 !important;
+}
+body.light-mode input::placeholder,
+body.light-mode textarea::placeholder { color: #9ca3af; }
+body.light-mode input:focus,
+body.light-mode select:focus,
+body.light-mode textarea:focus {
+    background: #ffffff !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+body.light-mode select option { background: #ffffff; color: #111827; }
+
+/* Seta do select */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a0a0a0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px !important;
+}
+body.light-mode select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234b5563' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+}
+
+/* --- SEÇÃO DE FUNCIONALIDADES --- */
 .features-section {
     max-width: 1200px;
     margin: 80px auto;
@@ -289,12 +392,10 @@ input:focus {
 }
 
 .feature-card {
-    /* Efeito de Vidro */
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: var(--card-bg-dark) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border) !important;
-    
     border-radius: 32px;
     padding: 40px 30px;
     text-align: left;
@@ -303,7 +404,6 @@ input:focus {
     overflow: hidden;
 }
 
-/* Efeito de brilho no topo do card ao passar o mouse */
 .feature-card::before {
     content: '';
     position: absolute;
@@ -315,15 +415,14 @@ input:focus {
 .feature-card:hover {
     transform: translateY(-10px);
     border-color: var(--accent-primary) !important;
-    box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
 }
 
 .feature-icon {
     font-size: 2.5rem;
     margin-bottom: 20px;
     display: block;
-    /* Adiciona um leve brilho no ícone */
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+    /* Remove o filtro que causava "caixa branca" no dark mode */
+    filter: none;
 }
 
 .feature-card h3 {
@@ -339,28 +438,34 @@ input:focus {
     line-height: 1.6;
     margin: 0;
 }
+
+body.light-mode .feature-card {
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+}
+body.light-mode .feature-card:hover {
+    box-shadow: 0 12px 40px rgba(37,99,235,0.12) !important;
+}
+
 /* =========================
    BOTÃO DE TEMA
 ========================= */
-
 .theme-btn {
     width: 45px;
     height: 45px;
-
     border-radius: 50%;
     border: 1px solid var(--glass-border);
-
     background: var(--bg-card);
-
     color: var(--text-main);
-
     cursor: pointer;
-
     font-size: 18px;
-
     backdrop-filter: blur(12px);
-
     transition: var(--transition-smooth);
+    /* Remove qualquer fundo ou borda desnecessária em emojis */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .theme-btn:hover {
@@ -369,10 +474,15 @@ input:focus {
     box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
 }
 
+body.light-mode .theme-btn {
+    background: rgba(255,255,255,0.9);
+    border-color: rgba(0,0,0,0.10);
+    color: #111827;
+}
+
 /* =========================
    ANIMAÇÕES SUAVES
 ========================= */
-
 body,
 header,
 .card,
@@ -387,22 +497,422 @@ button {
         border-color 0.3s ease,
         box-shadow 0.3s ease;
 }
+
+/* =========================
+   WISHLIST BTN
+========================= */
 .wishlist-btn {
-
     background: var(--accent-primary);
-
-    color: var(--text-main);
-
+    color: #ffffff !important;
     border: none;
-
     font-weight: 700;
-
     transition: var(--transition-smooth);
 }
 
 .wishlist-btn:hover {
-
     transform: scale(1.05);
-
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
 }
+
+/* =========================
+   LIGHT MODE — OVERRIDES GLOBAIS
+   Cobre todos os componentes com estilos inline
+   e classes com valores hardcoded do tema escuro.
+========================= */
+
+/* ── Fundo e texto base ── */
+body.light-mode {
+    background-color: #f0f4f8;
+    color: #111827;
+}
+
+/* ── Nav links ── */
+body.light-mode .nav-links a { color: #4b5563; }
+body.light-mode .nav-links a:hover { color: var(--accent-primary); text-shadow: none; }
+body.light-mode #logout-btn,
+body.light-mode a[href*="company_register"] { color: var(--accent-secondary) !important; }
+
+/* ── Cards genéricos ── */
+body.light-mode .event-card,
+body.light-mode .place-card,
+body.light-mode .itinerary-card,
+body.light-mode .glass-card,
+body.light-mode .stat-card,
+body.light-mode .feature-card,
+body.light-mode .cta-card,
+body.light-mode .quick-access-card,
+body.light-mode .settings-sidebar,
+body.light-mode .itin-card,
+body.light-mode .register-card-glass,
+body.light-mode .feature-card-glass,
+body.light-mode .search-filter-box {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07) !important;
+}
+
+/* ── Texto em headings ── */
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4 {
+    color: #111827;
+}
+
+/* ── Botão primário ── */
+body.light-mode .btn-primary,
+body.light-mode .btn-primary * {
+    color: #ffffff !important;
+}
+body.light-mode .btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(37,99,235,0.35);
+}
+
+/* ── Botões fantasma / ghost – fundo semitransparente escuro vira claro ── */
+body.light-mode .btn:not(.btn-primary):not(.wishlist-btn):not(.btn-icon):not(.btn-danger) {
+    background: rgba(0,0,0,0.05) !important;
+    color: #111827 !important;
+    border-color: rgba(0,0,0,0.10) !important;
+}
+body.light-mode .nav-btn {
+    background: rgba(0,0,0,0.04) !important;
+    color: #111827 !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .nav-btn:hover {
+    background: rgba(37,99,235,0.08) !important;
+    color: var(--accent-primary) !important;
+}
+
+/* ── Stat number gradient ── */
+body.light-mode .stat-number {
+    background: linear-gradient(to bottom, #111827, #2563eb);
+    background-clip: text; -webkit-background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* ── CTA card ── */
+body.light-mode .cta-card {
+    background: linear-gradient(135deg, rgba(37,99,235,0.07), rgba(29,78,216,0.03)) !important;
+    border-color: rgba(37,99,235,0.12) !important;
+}
+
+/* ── Settings sidebar / nav items ── */
+body.light-mode .sn-item {
+    color: #4b5563 !important;
+    border-bottom-color: rgba(0,0,0,0.04) !important;
+}
+body.light-mode .sn-item:hover {
+    background: rgba(0,0,0,0.04) !important;
+    color: #111827 !important;
+}
+body.light-mode .sn-item.active {
+    background: rgba(37,99,235,0.08) !important;
+    color: var(--accent-primary) !important;
+}
+
+/* ── Profile chips ── */
+body.light-mode .pref-chip {
+    background: rgba(0,0,0,0.04) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+    color: #4b5563 !important;
+}
+body.light-mode .pref-chip.active,
+body.light-mode .pref-chip:hover {
+    background: rgba(37,99,235,0.10) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+}
+
+/* ── Itinerário ── */
+body.light-mode .draft-alert {
+    background: rgba(37,99,235,0.04) !important;
+    border-color: rgba(37,99,235,0.25) !important;
+}
+body.light-mode .draft-tag {
+    background: rgba(0,0,0,0.05) !important;
+    border-color: rgba(0,0,0,0.10) !important;
+    color: #374151 !important;
+}
+body.light-mode .draft-tag:hover {
+    background: rgba(37,99,235,0.08) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+}
+body.light-mode .itin-head {
+    border-bottom-color: rgba(0,0,0,0.06) !important;
+}
+body.light-mode .itin-body { color: #374151; }
+body.light-mode .itin-tags { border-top-color: rgba(0,0,0,0.06) !important; }
+
+/* ── Dashboard ── */
+body.light-mode .event-dash-title { color: #111827 !important; }
+body.light-mode .event-item-mini,
+body.light-mode .reservation-card {
+    background: #f9fafb !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .cat-chip {
+    background: rgba(37,99,235,0.08) !important;
+    color: var(--accent-primary) !important;
+    border-color: rgba(37,99,235,0.15) !important;
+}
+
+/* ── Explore sidebar ── */
+body.light-mode .sidebar-panel {
+    background: #ffffff !important;
+    border-right-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .search-group .input {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+}
+body.light-mode .filter-chip {
+    background: rgba(0,0,0,0.05) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+    color: #374151 !important;
+}
+body.light-mode .filter-chip:hover,
+body.light-mode .filter-chip.active {
+    background: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+    color: #ffffff !important;
+}
+body.light-mode #btn-geo {
+    background: rgba(0,0,0,0.05) !important;
+    color: #111827 !important;
+    border-color: rgba(0,0,0,0.10) !important;
+}
+body.light-mode .btn-icon {
+    color: #ffffff !important;
+}
+
+/* ── Explore: painel de próximos (inline style com rgba(0,242,255,...)) ── */
+body.light-mode [style*="rgba(0,242,255"],
+body.light-mode [style*="rgba(0, 242, 255"] {
+    background: rgba(37,99,235,0.05) !important;
+    border-color: rgba(37,99,235,0.15) !important;
+}
+
+/* ── Modais ── */
+body.light-mode .modal-overlay { background: rgba(0,0,0,0.45) !important; }
+body.light-mode .modal-box,
+body.light-mode .review-modal-box,
+body.light-mode .reservation-modal-box {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.10) !important;
+    color: #111827 !important;
+}
+
+/* ── Cards de auth (login/register) ── */
+body.light-mode .auth-container {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.10) !important;
+}
+body.light-mode .input-auth,
+body.light-mode .input-login,
+body.light-mode .input-biz {
+    background: #f9fafb !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #111827 !important;
+}
+body.light-mode .input-auth:focus,
+body.light-mode .input-login:focus,
+body.light-mode .input-biz:focus {
+    background: #ffffff !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+/* ── Checklist de senha ── */
+body.light-mode .pwd-rules {
+    background: rgba(0,0,0,0.03) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .pwd-rules li { color: #6b7280 !important; }
+body.light-mode .pwd-rules li .dot { background: rgba(0,0,0,0.15) !important; }
+body.light-mode .pwd-rules li.ok { color: #16a34a !important; }
+body.light-mode .pwd-rules li.ok .dot { background: #16a34a !important; }
+
+/* ── Danger zone (settings) ── */
+body.light-mode .danger-card {
+    border-color: rgba(220,38,38,0.25) !important;
+    background: rgba(220,38,38,0.03) !important;
+}
+body.light-mode .danger-card h3 { color: #dc2626 !important; }
+
+/* ── Toggle switch ── */
+body.light-mode .toggle-track { background: rgba(0,0,0,0.12) !important; }
+body.light-mode .toggle-track.on { background: var(--accent-primary) !important; }
+body.light-mode .toggle-thumb { background: #ffffff !important; }
+
+/* ── Upload area (company register) ── */
+body.light-mode .upload-area-neon {
+    background: rgba(0,0,0,0.02) !important;
+    border-color: rgba(0,0,0,0.12) !important;
+}
+body.light-mode .upload-area-neon:hover {
+    background: rgba(37,99,235,0.04) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* ── Company dashboard ── */
+body.light-mode .company-stat-card,
+body.light-mode .event-item,
+body.light-mode .review-item,
+body.light-mode .tab-content-area {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .tab-btn { color: #4b5563 !important; }
+body.light-mode .tab-btn.active { color: var(--accent-primary) !important; }
+
+/* ── Separadores ── */
+body.light-mode .form-section-title::after,
+body.light-mode .section-sep::after {
+    background: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .meta-row {
+    border-bottom-color: rgba(0,0,0,0.06) !important;
+}
+
+/* ── Cor branca hardcoded que fica invisível no fundo claro ── */
+/* Texto branco inline em elementos NÃO-botão */
+body.light-mode [style*="color: #fff"]:not(.btn):not(.btn-primary):not(.logo-mark):not(.avatar-lg):not(.draft-badge):not(.wishlist-btn) {
+    color: #111827 !important;
+}
+body.light-mode [style*="color:#fff"]:not(.btn):not(.btn-primary):not(.logo-mark):not(.avatar-lg):not(.draft-badge):not(.wishlist-btn) {
+    color: #111827 !important;
+}
+body.light-mode [style*="color: white"]:not(.btn):not(.btn-primary) { color: #111827 !important; }
+body.light-mode [style*="color: #ffffff"]:not(.btn):not(.btn-primary) { color: #111827 !important; }
+
+/* Exceções: textos que DEVEM permanecer brancos */
+body.light-mode .btn-primary,
+body.light-mode .btn-primary * { color: #ffffff !important; }
+body.light-mode .logo-mark { color: #ffffff !important; }
+body.light-mode .avatar-lg { color: #ffffff !important; }
+body.light-mode .draft-badge { color: #ffffff !important; }
+body.light-mode .wishlist-btn { color: #ffffff !important; }
+body.light-mode .btn-icon { color: #ffffff !important; }
+
+/* ── Fundo rgba(255,255,255,0.05) nos botões ghost do dark mode ── */
+body.light-mode [style*="background:rgba(255,255,255,0.05)"],
+body.light-mode [style*="background: rgba(255,255,255,0.05)"],
+body.light-mode [style*="background:rgba(255,255,255,.05)"],
+body.light-mode [style*="background: rgba(255,255,255,.05)"],
+body.light-mode [style*="background:rgba(255,255,255,0.1)"],
+body.light-mode [style*="background: rgba(255,255,255,0.1)"],
+body.light-mode [style*="background:rgba(255,255,255,.1)"],
+body.light-mode [style*="background: rgba(255,255,255,.1)"],
+body.light-mode [style*="background:rgba(255,255,255,.02)"],
+body.light-mode [style*="background: rgba(255,255,255,.02)"],
+body.light-mode [style*="background:rgba(255,255,255,.03)"],
+body.light-mode [style*="background: rgba(255,255,255,.03)"],
+body.light-mode [style*="background:rgba(255,255,255,.04)"],
+body.light-mode [style*="background: rgba(255,255,255,.04)"] {
+    background: rgba(0,0,0,0.04) !important;
+}
+
+/* ── Cor vermelha do logout e erros ── */
+body.light-mode [style*="color: #ff4d4d"],
+body.light-mode [style*="color:#ff4d4d"] { color: #dc2626 !important; }
+body.light-mode [style*="color: #ff4646"],
+body.light-mode [style*="color:#ff4646"] { color: #dc2626 !important; }
+
+/* ── Botões de ação de erro (delete etc.) ── */
+body.light-mode [style*="color: #ff6464"],
+body.light-mode [style*="color:#ff6464"],
+body.light-mode [style*="rgba(255,100,100"],
+body.light-mode [style*="rgba(255, 100, 100"] {
+    color: #dc2626 !important;
+    background: rgba(220,38,38,0.08) !important;
+    border-color: rgba(220,38,38,0.20) !important;
+}
+
+/* ── Botão "Roteiro" inline azul neon no dashboard ── */
+body.light-mode [style*="rgba(0,242,255,.08)"],
+body.light-mode [style*="rgba(0, 242, 255, .08)"],
+body.light-mode [style*="rgba(0,242,255, .08)"] {
+    background: rgba(37,99,235,0.08) !important;
+    border-color: rgba(37,99,235,0.20) !important;
+}
+
+/* ── Mapa: remove filtro dark no tema claro ── */
+body.light-mode #map-interactive,
+body.light-mode .leaflet-container {
+    filter: none !important;
+}
+
+/* ── Profile name / meta ── */
+body.light-mode .profile-name { color: #111827 !important; }
+body.light-mode .meta-row span:last-child { color: #111827 !important; }
+
+/* ── Badge de status ── */
+body.light-mode .badge-upcoming {
+    background: rgba(34,197,94,0.12) !important;
+    color: #16a34a !important;
+    border-color: rgba(34,197,94,0.25) !important;
+}
+
+/* ── Scrollbar ── */
+body.light-mode ::-webkit-scrollbar-track { background: #f3f4f6; }
+body.light-mode ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
+body.light-mode ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+
+/* ── Spinner neon (ajuste cor no light) ── */
+body.light-mode .spinner-neon {
+    border-color: rgba(37,99,235,0.15) !important;
+    border-top-color: var(--accent-primary) !important;
+    box-shadow: none !important;
+}
+
+/* ── Input moderno (events.html) ── */
+body.light-mode .input-modern {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #111827 !important;
+}
+body.light-mode .input-modern:focus {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12) !important;
+}
+body.light-mode select.input-modern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234b5563' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+}
+
+/* ── Texto "#000" que fica invisível em background claro (fundo acidente) ── */
+/* btn-primary no dark usa #000, no light deve usar #fff — já tratado acima */
+
+/* ── Textos de upload / drag area ── */
+body.light-mode .upload-area-neon p { color: #374151 !important; }
+
+/* ── Spinner / loading ── */
+body.light-mode .loading-program { color: #6b7280 !important; }
+
+/* ── Footer texto ── */
+body.light-mode .footer { color: #4b5563 !important; }
+body.light-mode [style*="color: #444"],
+body.light-mode [style*="color:#444"] { color: #374151 !important; }
+body.light-mode [style*="color: #888"],
+body.light-mode [style*="color:#888"] { color: #6b7280 !important; }
+
+/* ── Itinerary: draft "Você tem lugares selecionados" ── */
+body.light-mode [style*="color: #fff; font-size: 1rem"],
+body.light-mode h3[style*="color: #fff"] { color: #111827 !important; }
+
+/* ── Notification toggles text ── */
+body.light-mode [style*="color: #fff; font-weight: 600"] { color: #111827 !important; }
+
+/* ── Cat-btn (dashboard explore buttons) ── */
+body.light-mode .cat-btn {
+    background: rgba(0,0,0,0.04) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+    color: #374151 !important;
+}
+body.light-mode .cat-btn:hover {
+    background: rgba(37,99,235,0.08) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+}
+

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Explorar Próximo - Tour.In</title>
@@ -61,7 +67,7 @@
         justify-content: center;
         border-radius: 15px;
         background: var(--accent-primary);
-        color: #000;
+        color: var(--filter-active-text);
         border: none;
         cursor: pointer;
         transition: var(--transition-smooth);
@@ -94,9 +100,8 @@
     }
     .filter-chip:hover, .filter-chip.active {
       background: var(--accent-primary);
-      color: #000;
+      color: var(--filter-active-text);
       border-color: var(--accent-primary);
-      box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
     }
 
     /* MAPA COM FILTRO DARK */
@@ -135,6 +140,16 @@
       .map-wrapper { order: 1; }
     }
   </style>
+
+<style>
+/* Light mode — explore.html */
+body.light-mode .sidebar-panel { background: #ffffff !important; }
+body.light-mode .text-muted-small { color: #6b7280 !important; }
+body.light-mode .results-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15) !important; }
+body.light-mode #map-interactive { filter: none !important; }
+body.light-mode .logo-mark { color: #ffffff !important; }
+</style>
+
 </head>
 <body>
   <div id="vlibras-widget" class="enabled">

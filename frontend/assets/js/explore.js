@@ -340,7 +340,7 @@ out body 60;`;
             ${imgHtml}
             <div style="display:flex;justify-content:space-between;align-items:flex-start;">
                 <div style="flex:1;">
-                    <div style="font-weight:700;font-size:.95rem;color:#fff;margin-bottom:4px;">
+                    <div style="font-weight:700;font-size:.95rem;color:var(--text-main);margin-bottom:4px;">
                         ${catLabel} ${escapeHtml(place.name)}
                     </div>
                     <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:6px;">${escapeHtml(place.address || '')}</div>
@@ -352,7 +352,7 @@ out body 60;`;
             </div>
             <div style="display:flex;gap:8px;margin-top:10px;">
                 <button onclick="focusOnMap(${place.lat},${place.lon},'${escapeHtml(place.name)}')"
-                    style="flex:1;padding:7px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:10px;color:#fff;font-size:.75rem;cursor:pointer;">
+                    style="flex:1;padding:7px;background:var(--btn-ghost-bg);border:1px solid var(--glass-border);border-radius:10px;color:var(--btn-ghost-color);font-size:.75rem;cursor:pointer;">
                     📍 Ver no mapa
                 </button>
                 <button onclick="openReviewModal(${place.id},'place','${escapeHtml(place.name)}')"
@@ -408,7 +408,7 @@ out body 60;`;
                 <div style="margin:6px 0;">${stars} <span style="font-size:.8rem;">${place.avg_rating ? place.avg_rating.toFixed(1) : '—'} (${place.review_count || 0})</span></div>
                 ${place.address ? `<div style="font-size:.78rem;color:#888;margin-bottom:6px;">${escapeHtml(place.address)}</div>` : ''}
                 <button onclick="openReviewModal(${place.id},'place','${escapeHtml(place.name)}')"
-                    style="width:100%;padding:6px;background:#00f2ff;border:none;border-radius:8px;color:#000;font-weight:700;font-size:.8rem;cursor:pointer;">
+                    class="btn btn-primary" style="width:100%;padding:6px;font-size:.8rem;cursor:pointer;">
                     ⭐ Avaliar este local
                 </button>
             </div>`;
@@ -428,10 +428,10 @@ out body 60;`;
             padding:12px;cursor:pointer;border-radius:14px;margin-bottom:8px;
             background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);transition:0.2s;`;
         card.innerHTML = `
-            <div style="font-weight:600;font-size:.9rem;color:#fff;margin-bottom:2px;">📍 ${escapeHtml(name)}</div>
+            <div style="font-weight:600;font-size:.9rem;color:var(--text-main);margin-bottom:2px;">📍 ${escapeHtml(name)}</div>
             <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:8px;">${escapeHtml(info)}</div>
             <button onclick="focusOnMap(${place.lat},${place.lon},'${escapeHtml(name)}')"
-                style="padding:5px 12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:8px;color:#fff;font-size:.72rem;cursor:pointer;">
+                style="padding:5px 12px;background:var(--btn-ghost-bg);border:1px solid var(--glass-border);border-radius:8px;color:var(--btn-ghost-color);font-size:.72rem;cursor:pointer;">
                 📍 Ver no mapa
             </button>`;
 
@@ -491,7 +491,7 @@ out body 60;`;
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                     <h3 style="font-weight:800;margin:0;">${escapeHtml(name)}</h3>
                     <button onclick="document.getElementById('review-modal').remove()"
-                        style="background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
+                        style="background:none;border:none;color:var(--text-main);font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
                 </div>
 
                 <h4 style="font-size:.8rem;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;font-weight:800;">Avaliações (${reviews.length})</h4>
@@ -509,7 +509,7 @@ out body 60;`;
                     </div>
                     <textarea id="review-comment" placeholder="Conte sua experiência... (opcional)"
                         style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);
-                               border-radius:14px;color:#fff;font-family:inherit;font-size:.9rem;resize:vertical;min-height:80px;box-sizing:border-box;"></textarea>
+                               border-radius:14px;color:var(--text-main);font-family:inherit;font-size:.9rem;resize:vertical;min-height:80px;box-sizing:border-box;"></textarea>
                     <button id="submit-review-btn" onclick="submitReview(${targetId},'${type}')"
                         style="width:100%;margin-top:12px;padding:14px;background:var(--accent-primary);border:none;border-radius:14px;
                                color:#000;font-weight:800;font-size:.95rem;cursor:pointer;">
@@ -703,7 +703,7 @@ window.saveOSMToWishlist = async (name, type, address, lat, lon) => {
             document.body.appendChild(t);
         }
         if (wlData.success) {
-            t.style.background = '#00f2ff'; t.style.color = '#000';
+            t.style.background = 'var(--accent-primary)'; t.style.color = document.body.classList.contains('light-mode') ? '#fff' : '#000';
             t.textContent = '❤️ Salvo na wishlist!';
         } else if (wlData.error?.includes('já salvo')) {
             t.style.background = '#333'; t.style.color = '#fff';

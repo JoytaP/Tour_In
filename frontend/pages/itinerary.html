@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Meus Roteiros — Tour.In</title>
@@ -73,7 +79,7 @@
     .draft-tag {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--glass-border);
-        color: #fff;
+        color: var(--text-main);
         font-size: 0.8rem;
         padding: 6px 14px;
         border-radius: 100px;
@@ -138,7 +144,7 @@
     .itin-title {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--text-main);
     }
 
     .itin-date {
@@ -171,18 +177,18 @@
 
     .btn-save {
         background: var(--accent-primary);
-        color: #000;
+        color: var(--filter-active-text);
         font-weight: 800;
     }
 
     .btn-danger-outline {
-        background: rgba(255, 77, 77, 0.05);
-        border: 1px solid rgba(255, 77, 77, 0.2);
-        color: #ff4d4d;
+        background: rgba(220,38,38,0.05);
+        border: 1px solid rgba(220,38,38,0.20);
+        color: #dc2626;
     }
 
     .btn-danger-outline:hover {
-        background: #ff4d4d;
+        background: #dc2626;
         color: #fff;
     }
 
@@ -191,6 +197,19 @@
         .itin-grid { grid-template-columns: 1fr; }
     }
   </style>
+
+<style>
+/* Light mode — itinerary.html */
+body.light-mode .draft-alert {
+    background: rgba(37,99,235,0.04) !important;
+    border-color: rgba(37,99,235,0.25) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
+}
+body.light-mode .itin-body { color: #374151; }
+body.light-mode .itin-tags { border-top-color: rgba(0,0,0,0.06) !important; }
+body.light-mode .logo-mark { color: #ffffff !important; }
+</style>
+
 </head>
 <body>
   <div id="vlibras-widget" class="enabled">
@@ -231,7 +250,7 @@
     <div id="draft-alert" class="draft-alert">
       <div class="draft-head">
         <span class="draft-badge">Rascunho Ativo</span>
-        <h3 style="color: #fff; font-size: 1rem;">Você tem lugares selecionados!</h3>
+        <h3 style="color: var(--text-main); font-size: 1rem;">Você tem lugares selecionados!</h3>
       </div>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
         Finalize seu roteiro com os <strong id="draft-count" style="color: var(--accent-primary);">0</strong> locais escolhidos:

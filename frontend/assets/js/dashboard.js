@@ -199,7 +199,7 @@ function renderWishlistOnDash(items) {
             <h3 style="color:var(--text-main);margin-bottom:6px;font-size:.95rem;font-weight:700;">${item.name}</h3>
             <p style="color:var(--text-muted);margin-bottom:16px;font-size:.82rem;line-height:1.4;">${desc}</p>
             <div style="display:flex;gap:8px;">
-                <button class="btn small" style="flex:1;padding:8px;font-size:.78rem;background:rgba(255,255,255,.05);"
+                <button class="btn small" style="flex:1;padding:8px;font-size:.78rem;background:var(--btn-ghost-bg);color:var(--btn-ghost-color);"
                     onclick="window.location.href='${isEvent ? 'events.html' : 'explore.html'}'">
                     📍 Ver
                 </button>
@@ -372,7 +372,7 @@ function dashToast(msg, type = 'success') {
     }
     t.textContent = msg;
     t.style.background = type === 'success' ? 'var(--accent-primary)' : '#eb5757';
-    t.style.color      = type === 'success' ? '#000' : '#fff';
+    t.style.color      = (type === 'success' && !document.body.classList.contains('light-mode')) ? '#000' : '#fff';
     t.style.opacity    = '1';
     clearTimeout(t._t);
     t._t = setTimeout(() => { t.style.opacity = '0'; }, 3000);

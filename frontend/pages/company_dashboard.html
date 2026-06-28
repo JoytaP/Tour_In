@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Painel Business — Tour.In</title>
@@ -209,6 +215,14 @@
       .action-btn { width: 100%; }
     }
   </style>
+
+<style>
+/* Light mode — company_dashboard.html */
+body.light-mode .logo-mark { color: #ffffff !important; }
+body.light-mode .company-stat-card,
+body.light-mode .event-item { background: #ffffff !important; border-color: rgba(0,0,0,0.08) !important; }
+</style>
+
 </head>
 
 <body>
@@ -255,7 +269,7 @@
     <div class="glass-card events-management">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;">
         <h3>Meus Eventos</h3>
-        <button id="new-event-btn" class="btn btn-primary" style="color: var(--text-main);">+ Novo Evento</button>
+        <button id="new-event-btn" class="btn btn-primary" style="">+ Novo Evento</button>
       </div>
       <div id="events-list">
         <div class="empty-state"><span>📅</span>Carregando...</div>
@@ -312,14 +326,14 @@
           <input type="text" id="h-dom" placeholder="Fechado">
         </div>
       </div>
-      <button class="btn btn-primary save-hours-btn" id="save-hours-btn" style="color: var(--text-main);">💾 Salvar Horários</button>
+      <button class="btn btn-primary save-hours-btn" id="save-hours-btn" style="">💾 Salvar Horários</button>
     </div>
 
     <!-- GALERIA -->
     <div class="glass-card photos-section">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <h3>📸 Fotos da Empresa</h3>
-        <button class="btn btn-primary" id="add-photos-btn" style="color: var(--text-main);">+ Adicionar</button>
+        <button class="btn btn-primary" id="add-photos-btn" style="">+ Adicionar</button>
       </div>
       <div class="photo-gallery" id="photo-gallery">
         <p style="color:var(--text-muted);">Nenhuma foto ainda.</p>
@@ -373,7 +387,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('event-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">✨ Criar Evento</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;">✨ Criar Evento</button>
       </div>
     </form>
   </div>
@@ -423,7 +437,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('edit-event-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">💾 Salvar</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;">💾 Salvar</button>
       </div>
     </form>
   </div>
@@ -473,7 +487,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="closeModal('edit-modal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="flex:2;color: var(--text-main);">💾 Salvar Perfil</button>
+        <button type="submit" class="btn btn-primary" style="flex:2;">💾 Salvar Perfil</button>
       </div>
     </form>
   </div>

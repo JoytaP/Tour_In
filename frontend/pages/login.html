@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Entrar — Tour.In</title>
@@ -111,6 +117,27 @@
         text-decoration: underline;
     }
   </style>
+
+<style>
+/* Light mode patches - login.html */
+body.light-mode .auth-container {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .login-header h1 { color: #111827 !important; }
+body.light-mode .logo-text { color: #111827; }
+body.light-mode .field-icon { color: #9ca3af; }
+body.light-mode .input-login {
+    background: #f9fafb !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #111827 !important;
+}
+body.light-mode .msg-error { color: #dc2626; }
+body.light-mode .footer-links { color: #6b7280; }
+body.light-mode a[href="#"] { color: #6b7280 !important; }
+body.light-mode .btn-primary { color: #ffffff !important; }
+</style>
+
 </head>
 <body>
   <button id="theme-toggle" class="theme-btn" aria-label="Alternar tema claro/escuro" title="Alternar tema"

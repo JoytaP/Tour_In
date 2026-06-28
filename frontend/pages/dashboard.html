@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script>
+    // Aplica tema antes do primeiro paint (evita flash)
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Dashboard - Tour.In</title>
@@ -78,7 +84,7 @@
       width: 100%; padding: 14px;
       background: rgba(255,255,255,.05);
       border: 1px solid transparent;
-      border-radius: 18px; color: #fff;
+      border-radius: 18px; color: var(--btn-ghost-color);
       text-decoration: none; margin-bottom: 10px;
       font-weight: 600; transition: var(--transition-smooth);
     }
@@ -180,6 +186,22 @@
     @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2,1fr); } .cta-card, .quick-access-card { grid-column: span 2; } }
     @media (max-width: 600px) { .bento-grid { grid-template-columns: 1fr; } .cta-card, .quick-access-card { grid-column: span 1; } .cta-card { padding: 30px; } }
   </style>
+
+<style>
+/* Light mode — dashboard.html */
+body.light-mode .stat-card { background: #ffffff !important; }
+body.light-mode .welcome-section h1 { color: #111827; }
+body.light-mode .cta-card {
+    background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(29,78,216,0.03)) !important;
+}
+body.light-mode .logo-mark { color: #ffffff !important; }
+body.light-mode .stat-number {
+    background: linear-gradient(to bottom, #111827, #2563eb);
+    background-clip: text; -webkit-background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+}
+</style>
+
 </head>
 <body>
   <div id="vlibras-widget" class="enabled"><div class="vlb-init-box"></div></div>
@@ -232,8 +254,8 @@
         <p style="color:var(--text-muted);margin-bottom:28px;position:relative;z-index:1;">Novos eventos e lugares foram adicionados em Brasília.</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:1;">
           <a href="events.html" class="btn btn-primary" style="color:#ffffff;">🎉 Ver Eventos</a>
-          <a href="explore.html" class="btn" style="background:rgba(255,255,255,.1);color:var(--text-main);border:1px solid var(--glass-border);">🗺️ Explorar Mapa</a>
-          <a href="itinerary.html" class="btn" style="background:rgba(0,242,255,.08);color:var(--text-main);border:1px solid rgba(0,242,255,.25);">📋 Criar Roteiro</a>
+          <a href="explore.html" class="btn" style="background:var(--btn-ghost-bg);color:var(--btn-ghost-color);border:1px solid var(--glass-border);">🗺️ Explorar Mapa</a>
+          <a href="itinerary.html" class="btn" style="background:var(--neon-glow);color:var(--text-main);border:1px solid var(--glass-border);">📋 Criar Roteiro</a>
         </div>
       </div>
 
@@ -289,7 +311,7 @@
           <div id="mini-map"></div>
           <div class="mini-map-overlay">📌 Brasília, DF</div>
           <div class="mini-map-cta">
-            <a href="explore.html" class="btn btn-primary" style="font-size:.78rem;padding:8px 16px;color:#000;">Explorar</a>
+            <a href="explore.html" class="btn btn-primary" style="font-size:.78rem;padding:8px 16px;">Explorar</a>
           </div>
         </div>
       </section>

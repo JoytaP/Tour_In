@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ➕ Roteiro
                     </button>
                     <button class="btn small"
-                        style="background:rgba(255,100,100,0.12);border:1px solid rgba(255,100,100,0.3);color:#ff6464;font-weight:700;"
+                        style="background:rgba(220,38,38,0.10);border:1px solid rgba(220,38,38,0.25);color:#dc2626;font-weight:700;"
                         onclick="saveToWishlist(null, '${event.id}')"
                         aria-label="Salvar na wishlist">
                         ❤️
